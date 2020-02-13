@@ -1,4 +1,5 @@
 .idea
 *.iml
 *.pyc
+.mypy_cache
 scrap.py
