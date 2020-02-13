@@ -31,7 +31,7 @@ import libwwz
 result: np.ndarray = libwwz.wwt(...)
 ```
 
-Full examples can be found in the examples directory.
+Full examples can be found in the [examples directory](https://bitbucket.org/redvoxhi/libwwz/src/master/examples/).
 
 ### Development
 
