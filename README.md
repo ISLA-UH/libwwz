@@ -18,7 +18,20 @@ pip install libwwz
 
 #### Install from source
 
+* Clone this repository from https://bitbucket.org/redvoxhi/libwwz/src/master/
+* Run `pip3 install . --upgrade --no-cache` from the project root
+
 ### Usage
+
+The `wwt` function is available after importing `libwwz`.
+
+```
+import libwwz
+
+result: np.ndarray = libwwz.wwt(...)
+```
+
+Full examples can be found in the examples directory.
 
 ### Development
 
@@ -28,7 +41,7 @@ If you would like to contribute:
 
 * Open a new issue on BitBucket
 * Fork and then clone this repository (https://bitbucket.org/redvoxhi/libwwz/src/master/)
-* Install the development requirements in `dev_requirements.txt`
+* Install the development requirements in `dev_requirements.txt` with `pip install -r dev_requirements.txt`
 * Create a new branch in your forked repo following the format of `issue-[issue number]`
 * Make your modifications, commit, and push to your forked repository
 * Create a pull request
