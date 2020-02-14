@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.4" />
+<title>libwwz.wwz API documentation</title>
+<meta name="description" content="This module provides functions for computing the weighted wavelet z transform over input values." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>libwwz.wwz</code></h1>
+</header>
+<section id="section-intro">
+<p>This module provides functions for computing the weighted wavelet z transform over input values.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+This module provides functions for computing the weighted wavelet z transform over input values.
+&#34;&#34;&#34;
+
+import numpy as np
+
+
+def wwt(timestamp: np.ndarray,
+        magnitude: np.ndarray,
+        f_lo: int,
+        f_hi: int,
+        df: float,
+        dcon: float,
+        time_divisions: int) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    This function takes timestamps (floats not datetime obj), magnitude (payload values), f_lo, f_hi, df (the desired \
+    ranges of frequencies (f_lo to f_hi) and the steps (df), dcon (the window steps for WWZ), and time_divisions ( \
+    number of points to make tau (the new timestamp that is evenly spaced). The code is based on G. Foster&#39;s FORTRAN
+    code as well as eaydin&#39;s python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+    It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+    and effective number. Specific equations can be found on Grant Foster&#39;s &#34;WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+    SAMPLED TIME SERIES&#34;. Some of the equations are labeled in the code with corresponding numbers.
+
+    :param timestamp: An array with corresponding times for the magnitude (payload).
+    :param magnitude: An array with payload values
+    :param f_lo: the low end of frequency to cast WWZ
+    :param f_hi: the high end of frequency to cast WWZ
+    :param df: frequency steps for casting WWZ
+    :param dcon: decay constant for the Morlet wavelet (negligible &lt;0.02)
+    :param time_divisions:
+    :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a pandas DataFrame
+    &#34;&#34;&#34;
+
+    # Initialize before the for loops
+    dvarw = 0.0  # The wavelet variance
+
+    # Frequencies to compute WWZ
+    freq = np.linspace(f_lo, f_hi, round((f_hi - f_lo) / df) + 1)
+    nfreq = len(freq)
+
+    # Insure time_divisions are smaller than the time stamp array
+    if time_divisions &gt; len(timestamp):
+        time_divisions = len(timestamp)
+        print(&#39;adjusted time_divisions to: &#39;, time_divisions)
+
+    # Time Shifts (tau) to compute WWZ
+    tau = np.linspace(timestamp[0], timestamp[-1], time_divisions)
+    ntau = len(tau)
+
+    # Creating array for output
+    output = np.empty((ntau * nfreq, 6))
+    numdat = len(timestamp)
+    index = 0
+
+    # WWT Stars Here
+
+    for dtau in tau:
+        # Initialize the outputs for each iteration
+        nstart = 1
+        dmfre = 0.0
+        dmamp = 0.0
+        dmcon = 0.0
+        dmneff = 0.0  # N_eff is the effective number (x)^2/(x^2)
+        dmz = -1.0  # less than the smallest WWZ
+
+        # loop over each interested frequency over the taus
+        for dfreq in freq:
+            # Initialize a vector (3) and matrix (3,3) and dweight2 and set domega
+            dvec = np.zeros(3)
+            dmat = np.zeros([3, 3])
+            dweight2 = 0
+            domega = 2 * np.pi * dfreq
+
+            # Get weights
+            for idat in range(nstart, numdat):
+                # initialize dz and dweight
+                dz = domega * (timestamp[idat] - dtau)
+                dweight = np.exp(-1 * dcon * dz ** 2)
+                # get upper triangular matrix of the weights and vector
+                if dweight &gt; 10 ** -9:
+                    cos_dz = np.cos(dz)
+                    sin_dz = np.sin(dz)
+                    dweight2 += dweight ** 2
+                    dvarw += dweight * magnitude[idat] ** 2
+
+                    dmat[0, 0] += dweight
+                    dmat[0, 1] += dweight * cos_dz
+                    dmat[0, 2] += dweight * sin_dz
+                    dmat[1, 1] += dweight * cos_dz ** 2
+                    dmat[1, 2] += dweight * cos_dz * sin_dz
+                    dmat[2, 2] += dweight * sin_dz ** 2
+
+                    dvec[0] += dweight * magnitude[idat]
+                    dvec[1] += dweight * magnitude[idat] * cos_dz
+                    dvec[2] += dweight * magnitude[idat] * sin_dz
+
+                elif dz &gt; 0:
+                    break
+                else:
+                    nstart = idat + 1
+
+            # Get dneff
+            if dweight2 &gt; 0:
+                dneff = (dmat[0, 0] ** 2) / dweight2
+            else:
+                dneff = 0
+
+            # Get damp, dpower, dpowz
+            dcoef = [0, 0, 0]
+            damp = 0
+            dpower = 0
+
+            if dneff &gt; 3:
+                dvec = dvec / dmat[0, 0]
+                # avoid for loops
+                dmat[..., 1:] /= dmat[0, 0]
+
+                # set dvarw
+                if dmat[0, 0] &gt; 0.005:
+                    dvarw = dvarw / dmat[0, 0]
+                else:
+                    dvarw = 0.0
+
+                # some initialize
+                dmat[0, 0] = 1.0
+                davew = dvec[0]
+                dvarw = dvarw - (davew ** 2)
+
+                if dvarw &lt;= 0.0:
+                    dvarw = 10 ** -12
+
+                # avoid for loops
+                dmat[1, 0] = dmat[0, 1]
+                dmat[2, 0] = dmat[0, 2]
+                dmat[2, 1] = dmat[1, 2]
+                dmat = np.linalg.inv(dmat)
+
+                # set dcoef and dpower
+                dcoef = dmat.dot(dvec)
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)
+
+                dpowz = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))
+                dpower = (dneff - 1.0) * dpower / (2.0 * dvarw)
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)
+
+            else:
+                dpowz = 0.0
+                dpower = 0.0
+                damp = 0.0
+
+            if dneff &lt; (10 ** (-9)):
+                dneff = 0.0
+
+            if damp &lt; (10 ** (-9)):
+                damp = 0.0
+
+            if dpower &lt; (10 ** (-9)):
+                dpower = 0.0
+
+            if dpowz &lt; (10 ** (-9)):
+                dpowz = 0.0
+
+            # Let&#39;s write everything out.
+            output[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
+
+            index = index + 1
+
+    # Format the output to be in len(tau) by len(freq) matrix for each value with correct labels
+    # NEEDS WORK
+
+    tau_mat = output[:, 0].reshape([ntau, nfreq])
+    freq_mat = output[:, 1].reshape([ntau, nfreq])
+    wwz_mat = output[:, 2].reshape([ntau, nfreq])
+    amp_mat = output[:, 3].reshape([ntau, nfreq])
+    dcoef_mat = output[:, 4].reshape([ntau, nfreq])
+    dneff_mat = output[:, 5].reshape([ntau, nfreq])
+
+    return output</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="libwwz.wwz.wwt"><code class="name flex">
+<span>def <span class="ident">wwt</span></span>(<span>timestamp: numpy.ndarray, magnitude: numpy.ndarray, f_lo: int, f_hi: int, df: float, dcon: float, time_divisions: int) -> numpy.ndarray</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This function takes timestamps (floats not datetime obj), magnitude (payload values), f_lo, f_hi, df (the desired
+ranges of frequencies (f_lo to f_hi) and the steps (df), dcon (the window steps for WWZ), and time_divisions (
+number of points to make tau (the new timestamp that is evenly spaced). The code is based on G. Foster's FORTRAN
+code as well as eaydin's python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+and effective number. Specific equations can be found on Grant Foster's "WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+SAMPLED TIME SERIES". Some of the equations are labeled in the code with corresponding numbers.</p>
+<p>:param timestamp: An array with corresponding times for the magnitude (payload).
+:param magnitude: An array with payload values
+:param f_lo: the low end of frequency to cast WWZ
+:param f_hi: the high end of frequency to cast WWZ
+:param df: frequency steps for casting WWZ
+:param dcon: decay constant for the Morlet wavelet (negligible &lt;0.02)
+:param time_divisions:
+:return: Tau, Freq, WWZ, AMP, COEF, NEFF in a pandas DataFrame</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wwt(timestamp: np.ndarray,
+        magnitude: np.ndarray,
+        f_lo: int,
+        f_hi: int,
+        df: float,
+        dcon: float,
+        time_divisions: int) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    This function takes timestamps (floats not datetime obj), magnitude (payload values), f_lo, f_hi, df (the desired \
+    ranges of frequencies (f_lo to f_hi) and the steps (df), dcon (the window steps for WWZ), and time_divisions ( \
+    number of points to make tau (the new timestamp that is evenly spaced). The code is based on G. Foster&#39;s FORTRAN
+    code as well as eaydin&#39;s python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+    It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+    and effective number. Specific equations can be found on Grant Foster&#39;s &#34;WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+    SAMPLED TIME SERIES&#34;. Some of the equations are labeled in the code with corresponding numbers.
+
+    :param timestamp: An array with corresponding times for the magnitude (payload).
+    :param magnitude: An array with payload values
+    :param f_lo: the low end of frequency to cast WWZ
+    :param f_hi: the high end of frequency to cast WWZ
+    :param df: frequency steps for casting WWZ
+    :param dcon: decay constant for the Morlet wavelet (negligible &lt;0.02)
+    :param time_divisions:
+    :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a pandas DataFrame
+    &#34;&#34;&#34;
+
+    # Initialize before the for loops
+    dvarw = 0.0  # The wavelet variance
+
+    # Frequencies to compute WWZ
+    freq = np.linspace(f_lo, f_hi, round((f_hi - f_lo) / df) + 1)
+    nfreq = len(freq)
+
+    # Insure time_divisions are smaller than the time stamp array
+    if time_divisions &gt; len(timestamp):
+        time_divisions = len(timestamp)
+        print(&#39;adjusted time_divisions to: &#39;, time_divisions)
+
+    # Time Shifts (tau) to compute WWZ
+    tau = np.linspace(timestamp[0], timestamp[-1], time_divisions)
+    ntau = len(tau)
+
+    # Creating array for output
+    output = np.empty((ntau * nfreq, 6))
+    numdat = len(timestamp)
+    index = 0
+
+    # WWT Stars Here
+
+    for dtau in tau:
+        # Initialize the outputs for each iteration
+        nstart = 1
+        dmfre = 0.0
+        dmamp = 0.0
+        dmcon = 0.0
+        dmneff = 0.0  # N_eff is the effective number (x)^2/(x^2)
+        dmz = -1.0  # less than the smallest WWZ
+
+        # loop over each interested frequency over the taus
+        for dfreq in freq:
+            # Initialize a vector (3) and matrix (3,3) and dweight2 and set domega
+            dvec = np.zeros(3)
+            dmat = np.zeros([3, 3])
+            dweight2 = 0
+            domega = 2 * np.pi * dfreq
+
+            # Get weights
+            for idat in range(nstart, numdat):
+                # initialize dz and dweight
+                dz = domega * (timestamp[idat] - dtau)
+                dweight = np.exp(-1 * dcon * dz ** 2)
+                # get upper triangular matrix of the weights and vector
+                if dweight &gt; 10 ** -9:
+                    cos_dz = np.cos(dz)
+                    sin_dz = np.sin(dz)
+                    dweight2 += dweight ** 2
+                    dvarw += dweight * magnitude[idat] ** 2
+
+                    dmat[0, 0] += dweight
+                    dmat[0, 1] += dweight * cos_dz
+                    dmat[0, 2] += dweight * sin_dz
+                    dmat[1, 1] += dweight * cos_dz ** 2
+                    dmat[1, 2] += dweight * cos_dz * sin_dz
+                    dmat[2, 2] += dweight * sin_dz ** 2
+
+                    dvec[0] += dweight * magnitude[idat]
+                    dvec[1] += dweight * magnitude[idat] * cos_dz
+                    dvec[2] += dweight * magnitude[idat] * sin_dz
+
+                elif dz &gt; 0:
+                    break
+                else:
+                    nstart = idat + 1
+
+            # Get dneff
+            if dweight2 &gt; 0:
+                dneff = (dmat[0, 0] ** 2) / dweight2
+            else:
+                dneff = 0
+
+            # Get damp, dpower, dpowz
+            dcoef = [0, 0, 0]
+            damp = 0
+            dpower = 0
+
+            if dneff &gt; 3:
+                dvec = dvec / dmat[0, 0]
+                # avoid for loops
+                dmat[..., 1:] /= dmat[0, 0]
+
+                # set dvarw
+                if dmat[0, 0] &gt; 0.005:
+                    dvarw = dvarw / dmat[0, 0]
+                else:
+                    dvarw = 0.0
+
+                # some initialize
+                dmat[0, 0] = 1.0
+                davew = dvec[0]
+                dvarw = dvarw - (davew ** 2)
+
+                if dvarw &lt;= 0.0:
+                    dvarw = 10 ** -12
+
+                # avoid for loops
+                dmat[1, 0] = dmat[0, 1]
+                dmat[2, 0] = dmat[0, 2]
+                dmat[2, 1] = dmat[1, 2]
+                dmat = np.linalg.inv(dmat)
+
+                # set dcoef and dpower
+                dcoef = dmat.dot(dvec)
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)
+
+                dpowz = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))
+                dpower = (dneff - 1.0) * dpower / (2.0 * dvarw)
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)
+
+            else:
+                dpowz = 0.0
+                dpower = 0.0
+                damp = 0.0
+
+            if dneff &lt; (10 ** (-9)):
+                dneff = 0.0
+
+            if damp &lt; (10 ** (-9)):
+                damp = 0.0
+
+            if dpower &lt; (10 ** (-9)):
+                dpower = 0.0
+
+            if dpowz &lt; (10 ** (-9)):
+                dpowz = 0.0
+
+            # Let&#39;s write everything out.
+            output[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
+
+            index = index + 1
+
+    # Format the output to be in len(tau) by len(freq) matrix for each value with correct labels
+    # NEEDS WORK
+
+    tau_mat = output[:, 0].reshape([ntau, nfreq])
+    freq_mat = output[:, 1].reshape([ntau, nfreq])
+    wwz_mat = output[:, 2].reshape([ntau, nfreq])
+    amp_mat = output[:, 3].reshape([ntau, nfreq])
+    dcoef_mat = output[:, 4].reshape([ntau, nfreq])
+    dneff_mat = output[:, 5].reshape([ntau, nfreq])
+
+    return output</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="libwwz" href="index.html">libwwz</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="libwwz.wwz.wwt" href="#libwwz.wwz.wwt">wwt</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.4</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
