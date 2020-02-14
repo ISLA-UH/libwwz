@@ -39,7 +39,7 @@ def wwt(timestamps: np.ndarray,
     freq: np.ndarray = np.linspace(freq_low, freq_high, round((freq_high - freq_low) / freq_steps) + 1)
     nfreq: int = len(freq)
 
-    # Insure time_divisions are smaller than the time stamp array
+    # Ensure time_divisions are smaller than the time stamp array
     if time_divisions > len(timestamps):
         time_divisions = len(timestamps)
         print('adjusted time_divisions to: ', time_divisions)
