@@ -133,7 +133,6 @@ def wwt(timestamp: np.ndarray,
                 dmat[1, 0] = dmat[0, 1]
                 dmat[2, 0] = dmat[0, 2]
                 dmat[2, 1] = dmat[1, 2]
-
                 dmat = np.linalg.inv(dmat)
 
                 # set dcoef and dpower
