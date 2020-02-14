@@ -33,6 +33,10 @@ result: np.ndarray = libwwz.wwt(...)
 
 Full examples can be found in the [examples directory](https://bitbucket.org/redvoxhi/libwwz/src/master/examples/).
 
+### API Documentation
+
+API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v1.0.0/
+
 ### Development
 
 Contributions are welcome.
