@@ -4,10 +4,13 @@ This module provides examples demonstrating the WWZ.
 
 import time
 
+# noinspection Mypy
 import matplotlib.pyplot as plt
+# noinspection Mypy
 import numpy as np
 
 import libwwz
+
 
 # Code to remove data points at random
 

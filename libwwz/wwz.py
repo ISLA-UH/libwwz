@@ -2,6 +2,7 @@
 This module provides functions for computing the weighted wavelet z transform over input values.
 """
 
+# noinspection Mypy
 import numpy as np
 
 
