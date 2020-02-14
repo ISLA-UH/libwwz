@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-mypy -m libwwz
+mypy --config-file=.mypy.ini -m libwwz
