@@ -51,13 +51,13 @@ def run_examples() -> None:
     # Get the WWZ of the signals
     starttime = time.time()
     WWZ_simple = libwwz.wwt(timestamp, simple_signal, 1, 5, 0.5, 0.01, 800)
-    print(time.time() - starttime, 'seconds has passed')
+    print(round(time.time() - starttime, 2), 'seconds has passed')
     WWZ_simple_removed = libwwz.wwt(timestamp_removed, simple_removed, 1, 5, 0.5, 0.01, 400)
-    print(time.time() - starttime, 'seconds has passed')
+    print(round(time.time() - starttime, 2), 'seconds has passed')
     WWZ_complex = libwwz.wwt(timestamp, complex_signal, 1, 5, 0.5, 0.01, 800)
-    print(time.time() - starttime, 'seconds has passed')
+    print(round(time.time() - starttime, 2), 'seconds has passed')
     WWZ_complex_removed = libwwz.wwt(timestamp_removed, complex_removed, 1, 5, 0.5, 0.01, 400)
-    print(time.time() - starttime, 'seconds has passed')
+    print(round(time.time() - starttime, 2), 'seconds has passed')
 
     # Plot (you need ntau and nfreq to reshape the output)
 

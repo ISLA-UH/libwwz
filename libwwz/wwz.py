@@ -8,10 +8,43 @@ from typing import List
 import numpy as np
 
 
+def make_freq(freq_low: float,
+              freq_high: float,
+              freq_steps: float,) -> np.ndarray:
+    """
+    Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
+    :param freq_low: The low end of frequency to cast WWZ
+    :param freq_high: The high end of frequency to cast WWZ
+    :param freq_steps: The frequency steps for casting WWZ
+    :return: freq
+    """
+    freq: np.ndarray = np.arange(freq_low, freq_high+freq_steps, freq_steps)
+
+    return freq
+
+def make_tau(timestamps: np.ndarray,
+             time_divisions: int) -> np.ndarray:
+    """
+    Creates an array of times with given timestamps and time divisions to iterate over in the wwt code.
+    :param timestamps: An array with corresponding times for the magnitude (payload).
+    :param time_divisions: number of divisions for the new timestamps
+    :return: tau
+    """
+
+    # Check to see if time_divisions is smaller than timestamps (replace if larger)
+    if time_divisions > len(timestamps):
+        time_divisions = len(timestamps)
+        print('adjusted time_divisions to: ', time_divisions)
+
+    # Make tau
+    tau: np.ndarray = np.linspace(timestamps[0], timestamps[-1], time_divisions)
+
+    return tau
+
 def wwt(timestamps: np.ndarray,
         magnitudes: np.ndarray,
-        freq_low: int,
-        freq_high: int,
+        freq_low: float,
+        freq_high: float,
         freq_steps: float,
         decay_constant: float,
         time_divisions: int) -> np.ndarray:
@@ -28,7 +61,7 @@ def wwt(timestamps: np.ndarray,
     :param freq_high: the high end of frequency to cast WWZ
     :param freq_steps: frequency steps for casting WWZ
     :param decay_constant: decay constant for the Morlet wavelet (negligible <0.02)
-    :param time_divisions:
+    :param time_divisions: number of divisions for the new timestamps
     :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a pandas DataFrame
     """
 
@@ -36,16 +69,11 @@ def wwt(timestamps: np.ndarray,
     dvarw: float = 0.0  # The wavelet variance
 
     # Frequencies to compute WWZ
-    freq: np.ndarray = np.linspace(freq_low, freq_high, round((freq_high - freq_low) / freq_steps) + 1)
+    freq: np.ndarray = make_freq(freq_low, freq_high, freq_steps)
     nfreq: int = len(freq)
 
-    # Ensure time_divisions are smaller than the time stamp array
-    if time_divisions > len(timestamps):
-        time_divisions = len(timestamps)
-        print('adjusted time_divisions to: ', time_divisions)
-
     # Time Shifts (tau) to compute WWZ
-    tau: np.ndarray = np.linspace(timestamps[0], timestamps[-1], time_divisions)
+    tau: np.ndarray = make_tau(timestamps, time_divisions)
     ntau: int = len(tau)
 
     # Creating array for output
@@ -58,11 +86,6 @@ def wwt(timestamps: np.ndarray,
     for dtau in tau:
         # Initialize the outputs for each iteration
         nstart: int = 1
-        # dmfre: float = 0.0
-        # dmamp: float = 0.0
-        # dmcon: float = 0.0
-        # dmneff: float = 0.0  # N_eff is the effective number (x)^2/(x^2)
-        # dmz: float = -1.0  # less than the smallest WWZ
 
         # loop over each interested frequency over the taus
         for dfreq in freq:
@@ -108,8 +131,6 @@ def wwt(timestamps: np.ndarray,
 
             # Get damp, dpower, dpowz
             dcoef: List[int] = [0, 0, 0]
-            # damp: float = 0.0
-            # dpower: float = 0.0
 
             if dneff > 3:
                 dvec = dvec / dmat[0, 0]
@@ -141,11 +162,9 @@ def wwt(timestamps: np.ndarray,
                 dpower = np.dot(dcoef, dvec) - (davew ** 2)
 
                 dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))
-                # dpower = (dneff - 1.0) * dpower / (2.0 * dvarw)
                 damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)
             else:
                 dpowz = 0.0
-                # dpower = 0.0
                 damp = 0.0
 
             if dneff < (10 ** (-9)):
@@ -153,9 +172,6 @@ def wwt(timestamps: np.ndarray,
 
             if damp < (10 ** (-9)):
                 damp = 0.0
-
-            # if dpower < (10 ** (-9)):
-            #     dpower = 0.0
 
             if dpowz < (10 ** (-9)):
                 dpowz = 0.0
