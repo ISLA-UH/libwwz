@@ -2,4 +2,4 @@
 Exposes the wwt function directly without import the wwz module.
 """
 
-from libwwz.wwz import wwt
+from libwwz.wwz import wwt, wwt_para

@@ -8,7 +8,6 @@ import time
 import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
-
 import libwwz
 
 
@@ -52,6 +51,7 @@ def run_examples() -> None:
     starttime = time.time()
     WWZ_simple = libwwz.wwt(timestamp, simple_signal, 1, 5, 0.5, 0.01, 800)
     print(round(time.time() - starttime, 2), 'seconds has passed')
+
     WWZ_simple_removed = libwwz.wwt(timestamp_removed, simple_removed, 1, 5, 0.5, 0.01, 400)
     print(round(time.time() - starttime, 2), 'seconds has passed')
     WWZ_complex = libwwz.wwt(timestamp, complex_signal, 1, 5, 0.5, 0.01, 800)
@@ -59,7 +59,7 @@ def run_examples() -> None:
     WWZ_complex_removed = libwwz.wwt(timestamp_removed, complex_removed, 1, 5, 0.5, 0.01, 400)
     print(round(time.time() - starttime, 2), 'seconds has passed')
 
-    # Plot (you need ntau and nfreq to reshape the output)
+    # Plot
 
     plt.rcParams["figure.figsize"] = [14, 6]
     plt.rcParams.update({'font.size': 18})
@@ -76,28 +76,28 @@ def run_examples() -> None:
 
     plt.figure(1)
     plt.subplot(211)
-    plt.contourf(WWZ_simple[:, 0].reshape([800, 9]),
-                 WWZ_simple[:, 1].reshape([800, 9]),
-                 WWZ_simple[:, 2].reshape([800, 9]))
+    plt.contourf(WWZ_simple[0],
+                 WWZ_simple[1],
+                 WWZ_simple[2])
     plt.title('WWZ plot of the simple and simple removed')
 
     plt.subplot(212)
-    plt.contourf(WWZ_simple_removed[:, 0].reshape([400, 9]),
-                 WWZ_simple_removed[:, 1].reshape([400, 9]),
-                 WWZ_simple_removed[:, 2].reshape([400, 9]))
+    plt.contourf(WWZ_simple_removed[0],
+                 WWZ_simple_removed[1],
+                 WWZ_simple_removed[2])
 
     plt.figure(2)
 
     plt.subplot(211)
-    plt.contourf(WWZ_complex[:, 0].reshape([800, 9]),
-                 WWZ_complex[:, 1].reshape([800, 9]),
-                 WWZ_complex[:, 2].reshape([800, 9]))
+    plt.contourf(WWZ_complex[0],
+                 WWZ_complex[1],
+                 WWZ_complex[2])
     plt.title('WWZ plot of the complex and complex removed')
 
     plt.subplot(212)
-    plt.contourf(WWZ_complex_removed[:, 0].reshape([400, 9]),
-                 WWZ_complex_removed[:, 1].reshape([400, 9]),
-                 WWZ_complex_removed[:, 2].reshape([400, 9]))
+    plt.contourf(WWZ_complex_removed[0],
+                 WWZ_complex_removed[1],
+                 WWZ_complex_removed[2])
 
     plt.show()
 
