@@ -13,7 +13,7 @@ import multiprocessing
 
 def make_freq(freq_low: float,
               freq_high: float,
-              freq_steps: float,) -> np.ndarray:
+              freq_steps: float, ) -> np.ndarray:
     """
     Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
     :param freq_low: The low end of frequency to cast WWZ
@@ -21,9 +21,10 @@ def make_freq(freq_low: float,
     :param freq_steps: The frequency steps for casting WWZ
     :return: freq
     """
-    freq: np.ndarray = np.arange(freq_low, freq_high+freq_steps, freq_steps)
+    freq: np.ndarray = np.arange(freq_low, freq_high + freq_steps, freq_steps)
 
     return freq
+
 
 def make_tau(timestamps: np.ndarray,
              time_divisions: int) -> np.ndarray:
@@ -43,6 +44,7 @@ def make_tau(timestamps: np.ndarray,
     tau: np.ndarray = np.linspace(timestamps[0], timestamps[-1], time_divisions)
 
     return tau
+
 
 def wwt(timestamps: np.ndarray,
         magnitudes: np.ndarray,
@@ -89,7 +91,7 @@ def wwt(timestamps: np.ndarray,
     for dtau in tau:
         # Initialize the outputs for each iteration
         nstart: int = 1
-        #dvarw: float = 0.0  # may not carry over???
+        # dvarw: float = 0.0  # may not carry over???
 
         # loop over each interested frequency over the taus
         for dfreq in freq:
@@ -351,7 +353,6 @@ def wwt_para(timestamps: np.ndarray,
 
     # Do the parallel
     output = np.array(Parallel(n_jobs=num_cores)(delayed(para_tempt)(dtau) for dtau in tau))
-
 
     # Format the output to be in len(tau) by len(freq) matrix for each value with correct labels
 
