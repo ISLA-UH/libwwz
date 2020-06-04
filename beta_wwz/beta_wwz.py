@@ -1,5 +1,5 @@
 """
-BETA VERSION
+BETA VERSION -> currently same as official
 This module provides functions for computing the weighted wavelet z transform over input values.
 """
 
