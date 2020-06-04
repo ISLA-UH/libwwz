@@ -169,7 +169,11 @@ def wwt(timestamps: np.ndarray,
                 dmat[1, 0] = dmat[0, 1]
                 dmat[2, 0] = dmat[0, 2]
                 dmat[2, 1] = dmat[1, 2]
-                dmat = np.linalg.inv(dmat)
+
+                if np.linalg.det(dmat) == 0:
+                    dmat = np.linalg.pinv(dmat)
+                else:
+                    dmat = np.linalg.inv(dmat)
 
                 # set dcoef and dpower
                 dcoef = dmat.dot(dvec)
