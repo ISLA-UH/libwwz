@@ -4,8 +4,6 @@ This module provides functions for computing the weighted wavelet z transform ov
 
 from typing import List
 
-from typing import List
-
 # noinspection Mypy
 import numpy as np
 # noinspection Mypy
@@ -172,6 +170,7 @@ def wwt(timestamps: np.ndarray,
 
                 if np.linalg.det(dmat) == 0:
                     dmat = np.linalg.pinv(dmat)
+                    print("determinant is zero, using pseudo-inverse.")
                 else:
                     dmat = np.linalg.inv(dmat)
 
