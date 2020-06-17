@@ -35,7 +35,7 @@ Full examples can be found in the [examples directory](https://bitbucket.org/red
 
 ### API Documentation
 
-API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v1.0.0/
+API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v0.1.1/
 
 ### Development
 
