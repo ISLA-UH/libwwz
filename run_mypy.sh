@@ -6,3 +6,4 @@ if ! [[ -x "$(command -v mypy)" ]]; then
 fi
 
 mypy --config-file=.mypy.ini -m libwwz
+mypy --config-file=.mypy.ini -m beta_wwz

@@ -6,3 +6,4 @@ if ! [[ -x "$(command -v pylint)" ]]; then
 fi
 
 pylint libwwz
+pylint beta_wwz
