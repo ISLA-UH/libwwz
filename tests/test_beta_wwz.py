@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
 import libwwz
-import beta_wwz.beta_wwz as beta_wwz
+from libwwz import wwz_beta as beta_wwz
 
 
 # Code to remove data points at random

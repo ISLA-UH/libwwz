@@ -3,3 +3,4 @@ mypy >= 0.780
 pdoc3 >= 0.8.1
 twine >= 3.1.1
 matplotlib >= 3.2.2
+wheel >= 0.34.2

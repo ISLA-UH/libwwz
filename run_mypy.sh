@@ -5,5 +5,8 @@ if ! [[ -x "$(command -v mypy)" ]]; then
   exit 1
 fi
 
+set -o nounset
+set -o errexit
+set -o xtrace
+
 mypy --config-file=.mypy.ini -m libwwz
-mypy --config-file=.mypy.ini -m beta_wwz

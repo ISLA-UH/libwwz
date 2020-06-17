@@ -5,5 +5,8 @@ if ! [[ -x "$(command -v pylint)" ]]; then
   exit 1
 fi
 
+set -o nounset
+set -o errexit
+set -o xtrace
+
 pylint libwwz
-pylint beta_wwz
