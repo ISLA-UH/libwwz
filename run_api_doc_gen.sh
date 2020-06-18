@@ -5,4 +5,8 @@ if ! [[ -x "$(command -v pdoc3)" ]]; then
   exit 1
 fi
 
+set -o nounset
+set -o errexit
+set -o xtrace
+
 pdoc3 --html -c show_type_annotations=True -o docs libwwz

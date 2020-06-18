@@ -2,3 +2,6 @@
 *.iml
 *.pyc
 .mypy_cache
+dist
+build
+libwwz.egg-info

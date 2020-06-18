@@ -54,7 +54,7 @@ def wwt(timestamps: np.ndarray,
         freq_steps: float,
         decay_constant: float,
         time_divisions: int,
-        parallel: bool) -> np.ndarray:
+        parallel: bool = True) -> np.ndarray:
     """
     The code is based on G. Foster's FORTRAN
     code as well as eaydin's python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
