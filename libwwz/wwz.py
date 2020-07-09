@@ -76,20 +76,21 @@ def wwt(timestamps: np.ndarray,
     freq: np.ndarray = make_freq(freq_low, freq_high, freq_steps)
     nfreq: int = len(freq)
 
-    # Time Shifts (tau) to compute WWZ
+    # Get taus to compute WWZ (referred in paper as "time shift(s)")
     tau: np.ndarray = make_tau(timestamps, time_divisions)
     ntau: int = len(tau)
 
-    # Creating array for output
+    # Get number of data from timestamps
     numdat: int = len(timestamps)
 
-    # Get number of cores
+    # Get number of CPU cores on current device (used for parallel)
     num_cores = multiprocessing.cpu_count()
 
     # WWT Stars Here
     def tau_loop(dtau):
         """
-        Replaced the for loop of the taus for parallel processing.
+        Replaced the for loop of the taus ("time shifts") for parallel processing.
+        Comments include connections to the formula given in the Foster96.
         :param dtau: one of the taus being iterated
         :return: a single entry of Tau, Freq, WWZ, AMP, COEF, NEFF corresponding to dtau
         """
@@ -99,25 +100,29 @@ def wwt(timestamps: np.ndarray,
         nstart: int = 1
         dvarw: float = 0.0
 
-        # loop over each interested frequency over the taus
+        # loop over each interested "frequency" over the "time shifts"
         for dfreq in freq:
-            # Initialize a vector (3) and matrix (3,3) and dweight2 and set domega
+            # Initialize a vector (3) and matrix (3,3) and dweight2 (sum of dweight**2)
             dvec: np.ndarray = np.zeros(3)
             dmat: np.ndarray = np.zeros([3, 3])
             dweight2: float = 0.0
+            # Get Scale Factor (referred in paper as "frequency")
             domega: float = 2.0 * np.pi * dfreq
 
-            # Get weights
+            # Discrete wavelet transform (DWT)
+            # Lots of math here, but basically doing the summations shown in the paper
             for idat in range(nstart, numdat):
-                # initialize dz and dweight
+                # Get dweight (an element of "local data number" viewed as "weights" in the paper)
                 dz: float = domega * (timestamps[idat] - dtau)
                 dweight: float = np.exp(-1 * decay_constant * dz ** 2)
+
                 # get upper triangular matrix of the weights and vector
+                # These are used later to calculate Neff, DWT, DWP, etc in the paper
                 if dweight > 10 ** -9:
                     cos_dz: float = np.cos(dz)
                     sin_dz: float = np.sin(dz)
                     dweight2 += dweight ** 2
-                    dvarw += dweight * magnitudes[idat] ** 2
+                    dvarw += dweight * magnitudes[idat] ** 2    # Used to get "weighted variation" later
 
                     dmat[0, 0] += dweight
                     dmat[0, 1] += dweight * cos_dz
@@ -126,6 +131,7 @@ def wwt(timestamps: np.ndarray,
                     dmat[1, 2] += dweight * cos_dz * sin_dz
                     dmat[2, 2] += dweight * sin_dz ** 2
 
+                    # parallel to the 3 trial functions (5-5, 6, 7)
                     dvec[0] += dweight * magnitudes[idat]
                     dvec[1] += dweight * magnitudes[idat] * cos_dz
                     dvec[2] += dweight * magnitudes[idat] * sin_dz
@@ -135,8 +141,9 @@ def wwt(timestamps: np.ndarray,
                 else:
                     nstart = idat + 1
 
-            # Get dneff
+            # Get dneff ("effective number" for weighted projection)
             if dweight2 > 0:
+                # This is equation 5-4 in the paper
                 dneff: float = (dmat[0, 0] ** 2) / dweight2
             else:
                 dneff = 0.0
@@ -149,7 +156,6 @@ def wwt(timestamps: np.ndarray,
                 # avoid for loops
                 dmat[..., 1:] /= dmat[0, 0]
 
-                # set dvarw
                 if dmat[0, 0] > 0.005:
                     dvarw = dvarw / dmat[0, 0]
                 else:
@@ -158,7 +164,7 @@ def wwt(timestamps: np.ndarray,
                 # some initialize
                 dmat[0, 0] = 1.0
                 davew: float = dvec[0]
-                dvarw = dvarw - (davew ** 2)
+                dvarw = dvarw - (davew ** 2)    # "weighted variation" eq. 5-9
 
                 if dvarw <= 0.0:
                     dvarw = 10 ** -12
@@ -176,10 +182,10 @@ def wwt(timestamps: np.ndarray,
 
                 # set dcoef and dpower
                 dcoef = dmat.dot(dvec)
-                dpower = np.dot(dcoef, dvec) - (davew ** 2)
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)     # weighted model function eq. 5-10
 
-                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))
-                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)
+                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))    # WWZ eq. 5-12
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)   # WWA eq. 5-14
             else:
                 dpowz = 0.0
                 damp = 0.0
