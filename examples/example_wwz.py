@@ -14,20 +14,37 @@ import time
 import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
-import libwwz
+import tests.beta_wwz as beta
+import plotting.plot_methods as wwz_plot
 
 # Select Mode...
 parallel = True
 
 # number of time
-ntau = 400  # Creates new time with this many divisions.
-freq_steps = 0.5   # Resolution of frequency steps
+ntau = 20  # Creates new time with this many divisions.
+
+# linear
+freq_low = 1
+freq_high = 5
+freq_steps = 0.1  # Resolution of frequency steps
+freq_lin = [freq_low, freq_high, freq_steps]
+
+# octave
+freq_target = 2
+freq_low = 0.5
+freq_high = 8
+band_order = 3
+log_scale_base = 10**(3/10)
+override = False
+freq_oct = [freq_target, freq_low, freq_high, band_order, log_scale_base, override]
+
+# other
 c = 0.0125    # Decay constant for analyzing wavelet (negligible at c < 0.02)
 
 
 # Code to remove data points at random
 
-def remove_fraction_with_seed(data, fraction, seed=np.random.randint(0, 100, 1)):
+def remove_fraction_with_seed(data, fraction, seed=np.random.randint(1)):
     """
     removes fraction of data at random with given seed.
     :param data: data to remove
@@ -48,179 +65,75 @@ def run_examples() -> None:
 
     # Set timestamps
     sample_freq = 80
-    timestamp = np.arange(0, 10, 1 / sample_freq)
+    timestamp = np.arange(0, 60, 1 / sample_freq)
 
-    # Create simple signal (2hz) and mixed signal (2hz + 4hz)
+    # Create simple signal (2hz)
     sine_2hz = np.sin(timestamp * 2 * (2 * np.pi))
-    sine_3hz = np.sin(timestamp * 3 * (2 * np.pi))
-    sine_4hz = np.sin(timestamp * 4 * (2 * np.pi))
 
-    simple_signal = sine_3hz
-    mixed_signal = sine_2hz + 1.3*sine_4hz
+    simple_signal = sine_2hz
 
-    # Remove 40% of the signal at random
-    simple_removed = remove_fraction_with_seed(simple_signal, 0.4)
-    mixed_removed = remove_fraction_with_seed(mixed_signal, 0.4)
-    timestamp_removed = remove_fraction_with_seed(timestamp, 0.4)
+    # Remove 80% of the signal at random
+    simple_removed = remove_fraction_with_seed(simple_signal, 0.8)
+    timestamp_removed = remove_fraction_with_seed(timestamp, 0.8)
 
-    # Get the WWZ/WWA of the signals
+    # Get the WWZ/WWA of the signals (linear)
     starttime = time.time()
-    WWZ_simple = libwwz.wwt(timestamp, simple_signal, 1, 5, freq_steps, c, ntau, parallel)
+    WWZ_simple = beta.wwt(timestamp, simple_signal, ntau, freq_oct, c, 'octave')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple)')
-    WWZ_simple_removed = libwwz.wwt(timestamp_removed, simple_removed, 1, 5, freq_steps, c, ntau, parallel)
+    WWZ_simple_removed = beta.wwt(timestamp_removed, simple_removed, ntau, freq_oct, c, 'octave')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_removed)')
-    WWZ_mixed = libwwz.wwt(timestamp, mixed_signal, 1, 5, freq_steps, c, ntau, parallel)
-    print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_mixed)')
-    WWZ_mixed_removed = libwwz.wwt(timestamp_removed, mixed_removed, 1, 5, freq_steps, c, ntau, parallel)
-    print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_mixed_removed)')
-
-    # Normalize WWZ and multiply by WWA...
-    def get_WWZA(wwt: np.ndarray) -> np.ndarray:
-        """
-        Retruns a normalized WWZ multiplied WWA given a wwt output.
-        :param wwt: output of libwwz.wwt
-        :return: normalized wwz multiplied by wwa
-        """
-
-        WWZ_normalized = (wwt[2] - wwt[2].min()) / (wwt[2].max() - wwt[2].min())
-        WWZA = WWZ_normalized * wwt[3]
-
-        return WWZA
 
     # Plot
-    plt.rcParams["figure.figsize"] = [10, 6]
-    plt.rcParams.update({'font.size': 16})
+    plt.rcParams["figure.figsize"] = [9, 4]
+    plt.rcParams.update({'font.size': 14})
 
     # Plot of base functions
     plt.figure(0)
-    plt.subplot(211)
     plt.plot(timestamp, simple_signal, '-')
     plt.plot(timestamp_removed, simple_removed, 'o')
-    plt.suptitle('The simple signal and mixed signal')
     plt.ylabel("simple (count)")
     plt.legend(['full', 'removed'], loc=1, fontsize=10)
-    plt.xticks([])
-
-    plt.subplot(212)
-    plt.plot(timestamp, mixed_signal, '-')
-    plt.plot(timestamp_removed, mixed_removed, 'o')
-    plt.ylabel("mixed (count)")
     plt.xlabel("time (s)")
-    plt.legend(['full', 'removed'], loc=1, fontsize=10)
+    plt.suptitle('The simple signal (2 Hz)')
 
     # Plot of WWZ for simple and simple removed
-    plt.figure(1)
-    plt.subplot(211)
-    plt.contourf(WWZ_simple[0],
-                 WWZ_simple[1],
-                 WWZ_simple[2])
-    plt.colorbar()
-    plt.xticks([])
-    plt.ylabel('full (Hz)')
+    wwz_plot.octave_plotter(WWZ_simple[0],
+                            WWZ_simple[1],
+                            WWZ_simple[2],
+                            band_order=band_order,
+                            log_scale_base=log_scale_base)
+    plt.ylabel('frequency (Hz)')
+    plt.xlabel('time')
+    plt.title('WWZ of the full signal (2 Hz)')
 
-    plt.subplot(212)
-    plt.contourf(WWZ_simple_removed[0],
-                 WWZ_simple_removed[1],
-                 WWZ_simple_removed[2])
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWZ of simple and simple removed')
+    wwz_plot.octave_plotter(WWZ_simple_removed[0],
+                            WWZ_simple_removed[1],
+                            WWZ_simple_removed[2],
+                            band_order=band_order,
+                            log_scale_base=log_scale_base)
+    plt.ylabel('frequency (Hz)')
+    plt.xlabel('time')
+    plt.title('WWZ of the removed signal (2 Hz)')
 
-    # Plot of WWZ for mixed and mixed removed
-    plt.figure(2)
-    plt.subplot(211)
-    plt.contourf(WWZ_simple[0],
-                 WWZ_simple[1],
-                 WWZ_simple[3])
-    plt.ylabel('full (Hz)')
-    plt.colorbar()
-    plt.xticks([])
 
-    plt.subplot(212)
-    plt.contourf(WWZ_simple_removed[0],
-                 WWZ_simple_removed[1],
-                 WWZ_simple_removed[3])
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWA of simple and simple removed')
+    # Plot of WWA for the same signal
+    wwz_plot.octave_plotter(WWZ_simple[0],
+                            WWZ_simple[1],
+                            WWZ_simple[3],
+                            band_order=band_order,
+                            log_scale_base=log_scale_base)
+    plt.ylabel('frequency (Hz)')
+    plt.xlabel('time')
+    plt.title('WWA of the full signal (2 Hz)')
 
-    # Plot of WWA for simple and simple removed
-    plt.figure(3)
-    plt.subplot(211)
-    plt.contourf(WWZ_mixed[0],
-                 WWZ_mixed[1],
-                 WWZ_mixed[2])
-    plt.ylabel('full (Hz)')
-    plt.xticks([])
-    plt.colorbar()
-
-    plt.subplot(212)
-    plt.contourf(WWZ_mixed_removed[0],
-                 WWZ_mixed_removed[1],
-                 WWZ_mixed_removed[2])
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWZ of mixed and mixed removed')
-
-    # Plot of WWA for mixed and mixed removed
-    plt.figure(4)
-    plt.subplot(211)
-    plt.contourf(WWZ_mixed[0],
-                 WWZ_mixed[1],
-                 WWZ_mixed[3])
-    plt.ylabel('full (Hz)')
-    plt.xticks([])
-    plt.colorbar()
-
-    plt.subplot(212)
-    plt.contourf(WWZ_mixed_removed[0],
-                 WWZ_mixed_removed[1],
-                 WWZ_mixed_removed[3])
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWA of mixed and mixed removed')
-
-    # Plot of WWZA for simple and simple removed
-    plt.figure(5)
-    plt.subplot(211)
-    plt.contourf(WWZ_simple[0],
-                 WWZ_simple[1],
-                 get_WWZA(WWZ_simple))
-    plt.colorbar()
-    plt.xticks([])
-    plt.ylabel('full (Hz)')
-
-    plt.subplot(212)
-    plt.contourf(WWZ_simple_removed[0],
-                 WWZ_simple_removed[1],
-                 get_WWZA(WWZ_simple_removed))
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWA of simple and simple removed')
-
-    # Plot of WWZA for mixed and mixed removed
-    plt.figure(6)
-    plt.subplot(211)
-    plt.contourf(WWZ_mixed[0],
-                 WWZ_mixed[1],
-                 get_WWZA(WWZ_mixed))
-    plt.ylabel('full (Hz)')
-    plt.xticks([])
-    plt.colorbar()
-
-    plt.subplot(212)
-    plt.contourf(WWZ_mixed_removed[0],
-                 WWZ_mixed_removed[1],
-                 get_WWZA(WWZ_mixed_removed))
-    plt.ylabel('removed (Hz)')
-    plt.xlabel('time (s)')
-    plt.colorbar()
-    plt.suptitle('WWA of mixed and mixed removed')
+    wwz_plot.octave_plotter(WWZ_simple_removed[0],
+                            WWZ_simple_removed[1],
+                            WWZ_simple_removed[3],
+                            band_order=band_order,
+                            log_scale_base=log_scale_base)
+    plt.ylabel('frequency (Hz)')
+    plt.xlabel('time')
+    plt.title('WWA of the removed signal (2 Hz)')
 
     plt.show()
 

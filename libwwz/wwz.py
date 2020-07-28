@@ -11,21 +11,6 @@ from joblib import Parallel, delayed
 import multiprocessing
 
 
-def make_freq(freq_low: float,
-              freq_high: float,
-              freq_steps: float, ) -> np.ndarray:
-    """
-    Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
-    :param freq_low: The low end of frequency to cast WWZ
-    :param freq_high: The high end of frequency to cast WWZ
-    :param freq_steps: The frequency steps for casting WWZ
-    :return: freq
-    """
-    freq: np.ndarray = np.arange(freq_low, freq_high + freq_steps, freq_steps)
-
-    return freq
-
-
 def make_tau(timestamps: np.ndarray,
              time_divisions: int) -> np.ndarray:
     """
@@ -46,13 +31,71 @@ def make_tau(timestamps: np.ndarray,
     return tau
 
 
+def make_freq(freq_low: float,
+              freq_high: float,
+              freq_steps: float, ) -> np.ndarray:
+    """
+    Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
+    :param freq_low: The low end of frequency to cast WWZ
+    :param freq_high: The high end of frequency to cast WWZ
+    :param freq_steps: The frequency steps for casting WWZ
+    :return: freq
+    """
+    freq: np.ndarray = np.arange(freq_low, freq_high + freq_steps, freq_steps)
+
+    return freq
+
+
+def make_octave_freq(freq_target: float,
+                     freq_low: float,
+                     freq_high: float,
+                     band_order: float,
+                     log_scale_base: float,
+                     freq_pseudo_sr: float,
+                     largest_tau_window: float,
+                     override: bool) -> np.ndarray:
+    """
+    Creates an array of frequencies based on Milton Garces' Constant-Q standardized Inferno framework (2013)
+    Recommend "Constant-Q Gabor Atoms for Sparse Binary Representations of Cyber-Physical Signatures" (Garces 2020)
+    :param freq_target: target frequency / frequency of interest
+    :param freq_low: desired minimum frequency to be contained
+    :param freq_high: desired maximum frequncy to be contained
+    :param band_order: octave band order (N => 1) *Recommend N = (1, 3, 6, 12, 24,...)
+    :param log_scale_base: logarithmic scale base to create the octaves
+    :param freq_pseudo_sr: pseudo sample rate of the data by taking the average
+    :param largest_tau_window: largest tau window made from make_tau function
+    :param override: Override the freq_low and freq_high restrictions
+    :return:
+    """
+    # Check and fix if the freq_low and freq_high meet requirements [CAN BE OVERRIDE]
+    # Calculate j_min / j_max (band number min / max)
+    if freq_low <= 2/largest_tau_window and override is False:
+        print('largest data window duration is too small for f_min... taking lowest possible...')
+        j_min = np.ceil(band_order * np.log2(2/(largest_tau_window*freq_target)) + 0.5)
+    else:
+        j_min = np.ceil(band_order * np.log2(freq_low/freq_target))
+
+    if freq_high >= freq_pseudo_sr/2 and override is False:
+        print('Nyquist Frequency is too small for f_max... taking largest possible...')
+        j_max = np.floor(band_order * np.log2(freq_pseudo_sr/(2*freq_target)) - 0.5)
+    else:
+        j_max = np.floor(band_order * np.log2(freq_high/freq_target))
+
+    # Create an array with the j_min to j_max
+    band_numbers = np.arange(j_min, j_max+1)
+
+    # Compute the octave frequency bands (center frequencies)
+    freq = freq_target * log_scale_base**(band_numbers/band_order)
+
+    return freq
+
+
 def wwt(timestamps: np.ndarray,
         magnitudes: np.ndarray,
-        freq_low: float,
-        freq_high: float,
-        freq_steps: float,
-        decay_constant: float,
         time_divisions: int,
+        freq_params: list,
+        decay_constant: float,
+        method: str = 'linear',
         parallel: bool = True) -> np.ndarray:
     """
     The code is based on G. Foster's FORTRAN
@@ -63,22 +106,47 @@ def wwt(timestamps: np.ndarray,
 
     :param timestamps: An array with corresponding times for the magnitude (payload).
     :param magnitudes: An array with payload values
-    :param freq_low: the low end of frequency to cast WWZ
-    :param freq_high: the high end of frequency to cast WWZ
-    :param freq_steps: frequency steps for casting WWZ
-    :param decay_constant: decay constant for the Morlet wavelet (negligible <0.02)
     :param time_divisions: number of divisions for the new timestamps
+    :param freq_params: A list containing parameters for making frequency bands to analyze over with given 'method'
+            'linear' -> [freq_low, freq_high, freq_step, override]
+            'octave' -> [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
+    :param decay_constant: decay constant for the Morlet wavelet (negligible <0.02)
+    :param method: determines method of creating freq ('linear', 'octave') default 'linear'
     :param parallel: boolean indicate to use parallel processing or not
     :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
     """
 
-    # Frequencies to compute WWZ
-    freq: np.ndarray = make_freq(freq_low, freq_high, freq_steps)
-    nfreq: int = len(freq)
+    # Starting Weighted Wavelet Z-transform
+    print("*** Starting Weighted Wavelet Z-transform ***\n")
 
     # Get taus to compute WWZ (referred in paper as "time shift(s)")
     tau: np.ndarray = make_tau(timestamps, time_divisions)
     ntau: int = len(tau)
+
+    # Calculate pseudo sample rate and largest time window to check for requirements
+    freq_pseudo_sr = 1 / np.diff(timestamps).mean()     # 1 / average period
+    largest_tau_window = np.diff(tau).max()
+    print('Pseudo sample frequency is ', np.round(freq_pseudo_sr, 3))
+    print('largest tau widow is ', np.round(largest_tau_window, 3))
+
+    # Frequencies to compute WWZ
+    if method == 'linear':
+        freq: np.ndarray = make_freq(freq_low=freq_params[0],
+                                     freq_high=freq_params[1],
+                                     freq_steps=freq_params[2])
+        nfreq: int = len(freq)
+
+    elif method == 'octave':
+        freq: np.ndarray = make_octave_freq(freq_target=freq_params[0],
+                                            freq_low=freq_params[1],
+                                            freq_high=freq_params[2],
+                                            band_order=freq_params[3],
+                                            log_scale_base=freq_params[4],
+                                            freq_pseudo_sr=freq_pseudo_sr,
+                                            largest_tau_window=largest_tau_window,
+                                            override=freq_params[5])
+        nfreq: int = len(freq)
+
 
     # Get number of data from timestamps
     numdat: int = len(timestamps)
