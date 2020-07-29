@@ -9,6 +9,7 @@ import numpy as np
 # noinspection Mypy
 from joblib import Parallel, delayed
 import multiprocessing
+import time
 
 
 def make_tau(timestamps: np.ndarray,
@@ -70,13 +71,13 @@ def make_octave_freq(freq_target: float,
     # Check and fix if the freq_low and freq_high meet requirements [CAN BE OVERRIDE]
     # Calculate j_min / j_max (band number min / max)
     if freq_low <= 2/largest_tau_window and override is False:
-        print('largest data window duration is too small for f_min... taking lowest possible...')
+        print('largest data window duration is too small for freq_low... taking lowest possible...')
         j_min = np.ceil(band_order * np.log2(2/(largest_tau_window*freq_target)) + 0.5)
     else:
         j_min = np.ceil(band_order * np.log2(freq_low/freq_target))
 
     if freq_high >= freq_pseudo_sr/2 and override is False:
-        print('Nyquist Frequency is too small for f_max... taking largest possible...')
+        print('Nyquist Frequency is too small for freq_high... taking largest possible...')
         j_max = np.floor(band_order * np.log2(freq_pseudo_sr/(2*freq_target)) - 0.5)
     else:
         j_max = np.floor(band_order * np.log2(freq_high/freq_target))
@@ -116,8 +117,9 @@ def wwt(timestamps: np.ndarray,
     :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
     """
 
-    # Starting Weighted Wavelet Z-transform
+    # Starting Weighted Wavelet Z-transform and start timer...
     print("*** Starting Weighted Wavelet Z-transform ***\n")
+    process_starttime: float  = time.time()
 
     # Get taus to compute WWZ (referred in paper as "time shift(s)")
     tau: np.ndarray = make_tau(timestamps, time_divisions)
@@ -292,5 +294,8 @@ def wwt(timestamps: np.ndarray,
     dneff_mat: np.ndarray = output[:, :, 5].reshape([ntau, nfreq])
 
     output = np.array([tau_mat, freq_mat, wwz_mat, amp_mat, dcoef_mat, dneff_mat])
+
+    # Finished Weighted Wavelet Z-transform and finish timer...
+    print(round(time.time() - process_starttime, 2), 'seconds has passed to complete Weighted Wavelet Z-transform \n')
 
     return output
