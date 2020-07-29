@@ -4,6 +4,7 @@ This module provides functions for plotting the outcomes of wwz.py. It focuses o
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import matplotlib.axes as axes
 import numpy as np
 
 
@@ -77,10 +78,11 @@ def make_tau_plot_grid(tau_mat: np.ndarray) -> np.ndarray:
     return tau_grid
 
 
-def linear_plotter(TAU, FREQ, DATA):
+def linear_plotter(ax: axes, TAU: np.ndarray, FREQ: np.ndarray, DATA: np.ndarray):
     """
     Creates a plot for the 'linear' method.
     You can add titles after calling the plotter.
+    :param ax: axis from a matplotlib.pyplot.subplots() to plot the data
     :param TAU: TAU output of the wwz.py (the time shifts)
     :param FREQ: FREQ output of the wwz.py (the frequencies)
     :param DATA: Desired data to be plotted
@@ -92,7 +94,6 @@ def linear_plotter(TAU, FREQ, DATA):
     freq_grid = make_linear_freq_plot_grid(FREQ)
 
     # Plot using subplots
-    fig, ax = plt.subplots()
     im = ax.pcolormesh(tau_grid, freq_grid, DATA)
 
     # Add color bar and fix y_ticks
@@ -101,10 +102,12 @@ def linear_plotter(TAU, FREQ, DATA):
     ax.get_yaxis().set_major_formatter(ticker.ScalarFormatter())
 
 
-def octave_plotter(TAU, FREQ, DATA, band_order, log_scale_base, log_y_scale: bool = True):
+def octave_plotter(ax: axes, TAU: np.ndarray, FREQ: np.ndarray, DATA: np.ndarray,
+                   band_order: float, log_scale_base: float, log_y_scale: bool = True):
     """
     Creates a plot for the 'linear' method.
     You can add titles after calling the plotter.
+    :param ax: axis from a matplotlib.pyplot.subplots() to plot the data
     :param TAU: TAU output of the wwz.py (the time shifts)
     :param FREQ: FREQ output of the wwz.py (the frequencies)
     :param DATA: Desired data to be plotted
@@ -118,7 +121,6 @@ def octave_plotter(TAU, FREQ, DATA, band_order, log_scale_base, log_y_scale: boo
     freq_grid = make_octave_freq_plot_grid(FREQ, band_order, log_scale_base)
 
     # Plot using subplots
-    fig, ax = plt.subplots()
     im = ax.pcolormesh(tau_grid, freq_grid, DATA)
 
     # Add color bar, fix y_scale, and fix y_ticks

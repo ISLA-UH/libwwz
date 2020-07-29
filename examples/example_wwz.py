@@ -1,9 +1,9 @@
 """
-This module provides examples demonstrating the WWZ by looking at a simple signal (3 Hz) and a mixed signal (2 & 4 Hz).
-The amplitude for 2 and 3 Hz are 1, where the 4 Hz is 1.3.
+This module provides examples demonstrating the WWZ by looking at a simple signal (2 Hz).
 
 Please select whether to run in parallel or not.
-You can change time divisions (ntau), scale factor (freq_steps), and decay_constant (c).
+There are 'linear' method and 'octave' method.
+current example showcases the 'octave' method...
 
 NOTE: The WWZ shows better information on frequency and WWA shows better information on amplitude.
 """
@@ -32,7 +32,7 @@ freq_lin = [freq_low, freq_high, freq_steps]
 # octave
 freq_target = 2
 freq_low = 0.5
-freq_high = 8
+freq_high = 6.5
 band_order = 3
 log_scale_base = 10**(3/10)
 override = False
@@ -84,7 +84,7 @@ def run_examples() -> None:
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_removed)')
 
     # Plot
-    plt.rcParams["figure.figsize"] = [9, 4]
+    plt.rcParams["figure.figsize"] = [14, 6]
     plt.rcParams.update({'font.size': 14})
 
     # Plot of base functions
@@ -97,43 +97,46 @@ def run_examples() -> None:
     plt.suptitle('The simple signal (2 Hz)')
 
     # Plot of WWZ for simple and simple removed
-    wwz_plot.octave_plotter(WWZ_simple[0],
-                            WWZ_simple[1],
-                            WWZ_simple[2],
+    fig, ax = plt.subplots(nrows=2, ncols=2)
+    wwz_plot.octave_plotter(ax=ax[0, 0],
+                            TAU=WWZ_simple[0],
+                            FREQ=WWZ_simple[1],
+                            DATA=WWZ_simple[2],
                             band_order=band_order,
                             log_scale_base=log_scale_base)
-    plt.ylabel('frequency (Hz)')
-    plt.xlabel('time')
-    plt.title('WWZ of the full signal (2 Hz)')
+    ax[0, 0].set_ylabel('full data (Hz)')
+    ax[0, 0].set_xticks([])
+    ax[0, 0].set_title('WWZ')
 
-    wwz_plot.octave_plotter(WWZ_simple_removed[0],
-                            WWZ_simple_removed[1],
-                            WWZ_simple_removed[2],
+    wwz_plot.octave_plotter(ax=ax[1, 0],
+                            TAU=WWZ_simple_removed[0],
+                            FREQ=WWZ_simple_removed[1],
+                            DATA=WWZ_simple_removed[2],
                             band_order=band_order,
                             log_scale_base=log_scale_base)
-    plt.ylabel('frequency (Hz)')
-    plt.xlabel('time')
-    plt.title('WWZ of the removed signal (2 Hz)')
-
+    ax[1, 0].set_ylabel('removed data (Hz)')
+    ax[1, 0].set_xlabel('time (s)')
 
     # Plot of WWA for the same signal
-    wwz_plot.octave_plotter(WWZ_simple[0],
-                            WWZ_simple[1],
-                            WWZ_simple[3],
+    wwz_plot.octave_plotter(ax=ax[0, 1],
+                            TAU=WWZ_simple[0],
+                            FREQ=WWZ_simple[1],
+                            DATA=WWZ_simple[3],
                             band_order=band_order,
                             log_scale_base=log_scale_base)
-    plt.ylabel('frequency (Hz)')
-    plt.xlabel('time')
-    plt.title('WWA of the full signal (2 Hz)')
+    ax[0, 1].set_title('WWA')
+    ax[0, 1].set_xticks([])
+    ax[0, 1].set_yticks([])
 
-    wwz_plot.octave_plotter(WWZ_simple_removed[0],
-                            WWZ_simple_removed[1],
-                            WWZ_simple_removed[3],
+    wwz_plot.octave_plotter(ax=ax[1, 1],
+                            TAU=WWZ_simple_removed[0],
+                            FREQ=WWZ_simple_removed[1],
+                            DATA=WWZ_simple_removed[3],
                             band_order=band_order,
                             log_scale_base=log_scale_base)
-    plt.ylabel('frequency (Hz)')
-    plt.xlabel('time')
-    plt.title('WWA of the removed signal (2 Hz)')
+    ax[1, 1].set_xlabel('time (s)')
+    ax[1, 1].set_yticks([])
+    plt.tight_layout()
 
     plt.show()
 
