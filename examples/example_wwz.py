@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
 import tests.beta_wwz as beta
-import plotting.plot_methods as wwz_plot
+import libwwz.plot_methods as wwz_plot
 
 # Select Mode...
 parallel = True

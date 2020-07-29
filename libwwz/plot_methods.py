@@ -2,7 +2,6 @@
 This module provides functions for plotting the outcomes of wwz.py. It focuses on making proper grids for pcolormesh.
 """
 
-import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.axes as axes
 import numpy as np
