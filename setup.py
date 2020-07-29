@@ -13,6 +13,7 @@ setup(name="libwwz",
       description='Library for computing the weighted wavelet Z transform.',
       packages=find_packages(include=[
           "libwwz",
+          "plotting",
       ],
           exclude=['tests']),
       long_description_content_type='text/markdown',
