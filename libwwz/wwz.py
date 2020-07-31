@@ -70,23 +70,23 @@ def make_octave_freq(freq_target: float,
     """
     # Check and fix if the freq_low and freq_high meet requirements [CAN BE OVERRIDE]
     # Calculate j_min / j_max (band number min / max)
-    if freq_low <= 2/largest_tau_window and override is False:
+    if freq_low <= 2 / largest_tau_window and override is False:
         print('largest data window duration is too small for freq_low... taking lowest possible...')
-        j_min = np.ceil(band_order * np.log2(2/(largest_tau_window*freq_target)) + 0.5)
+        j_min = np.ceil(band_order * np.log2(2 / (largest_tau_window * freq_target)) + 0.5)
     else:
-        j_min = np.ceil(band_order * np.log2(freq_low/freq_target))
+        j_min = np.ceil(band_order * np.log2(freq_low / freq_target))
 
-    if freq_high >= freq_pseudo_sr/2 and override is False:
+    if freq_high >= freq_pseudo_sr / 2 and override is False:
         print('Nyquist Frequency is too small for freq_high... taking largest possible...')
-        j_max = np.floor(band_order * np.log2(freq_pseudo_sr/(2*freq_target)) - 0.5)
+        j_max = np.floor(band_order * np.log2(freq_pseudo_sr / (2 * freq_target)) - 0.5)
     else:
-        j_max = np.floor(band_order * np.log2(freq_high/freq_target))
+        j_max = np.floor(band_order * np.log2(freq_high / freq_target))
 
     # Create an array with the j_min to j_max
-    band_numbers = np.arange(j_min, j_max+1)
+    band_numbers = np.arange(j_min, j_max + 1)
 
     # Compute the octave frequency bands (center frequencies)
-    freq = freq_target * log_scale_base**(band_numbers/band_order)
+    freq = freq_target * log_scale_base ** (band_numbers / band_order)
 
     return freq
 
@@ -119,14 +119,15 @@ def wwt(timestamps: np.ndarray,
 
     # Starting Weighted Wavelet Z-transform and start timer...
     print("*** Starting Weighted Wavelet Z-transform ***\n")
-    process_starttime: float  = time.time()
+    process_starttime: float = time.time()
 
     # Get taus to compute WWZ (referred in paper as "time shift(s)")
     tau: np.ndarray = make_tau(timestamps, time_divisions)
     ntau: int = len(tau)
 
     # Calculate pseudo sample rate and largest time window to check for requirements
-    freq_pseudo_sr = 1 / np.diff(timestamps).mean()     # 1 / average period
+    freq_pseudo_sr = 1 / np.diff(timestamps).mean()  # 1 / average period
+    # noinspection PyArgumentList
     largest_tau_window = np.diff(tau).max()
     print('Pseudo sample frequency is ', np.round(freq_pseudo_sr, 3))
     print('largest tau widow is ', np.round(largest_tau_window, 3))
@@ -139,16 +140,15 @@ def wwt(timestamps: np.ndarray,
         nfreq: int = len(freq)
 
     elif method == 'octave':
-        freq: np.ndarray = make_octave_freq(freq_target=freq_params[0],
-                                            freq_low=freq_params[1],
-                                            freq_high=freq_params[2],
-                                            band_order=freq_params[3],
-                                            log_scale_base=freq_params[4],
-                                            freq_pseudo_sr=freq_pseudo_sr,
-                                            largest_tau_window=largest_tau_window,
-                                            override=freq_params[5])
-        nfreq: int = len(freq)
-
+        freq = make_octave_freq(freq_target=freq_params[0],
+                                freq_low=freq_params[1],
+                                freq_high=freq_params[2],
+                                band_order=freq_params[3],
+                                log_scale_base=freq_params[4],
+                                freq_pseudo_sr=freq_pseudo_sr,
+                                largest_tau_window=largest_tau_window,
+                                override=freq_params[5])
+        nfreq = len(freq)
 
     # Get number of data from timestamps
     numdat: int = len(timestamps)
@@ -192,7 +192,7 @@ def wwt(timestamps: np.ndarray,
                     cos_dz: float = np.cos(dz)
                     sin_dz: float = np.sin(dz)
                     dweight2 += dweight ** 2
-                    dvarw += dweight * magnitudes[idat] ** 2    # Used to get "weighted variation" later
+                    dvarw += dweight * magnitudes[idat] ** 2  # Used to get "weighted variation" later
 
                     dmat[0, 0] += dweight
                     dmat[0, 1] += dweight * cos_dz
@@ -234,7 +234,7 @@ def wwt(timestamps: np.ndarray,
                 # some initialize
                 dmat[0, 0] = 1.0
                 davew: float = dvec[0]
-                dvarw = dvarw - (davew ** 2)    # "weighted variation" eq. 5-9
+                dvarw = dvarw - (davew ** 2)  # "weighted variation" eq. 5-9
 
                 if dvarw <= 0.0:
                     dvarw = 10 ** -12
@@ -252,10 +252,10 @@ def wwt(timestamps: np.ndarray,
 
                 # set dcoef and dpower
                 dcoef = dmat.dot(dvec)
-                dpower = np.dot(dcoef, dvec) - (davew ** 2)     # weighted model function eq. 5-10
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)  # weighted model function eq. 5-10
 
-                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))    # WWZ eq. 5-12
-                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)   # WWA eq. 5-14
+                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))  # WWZ eq. 5-12
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)  # WWA eq. 5-14
             else:
                 dpowz = 0.0
                 damp = 0.0
