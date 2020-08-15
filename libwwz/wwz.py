@@ -72,20 +72,22 @@ def make_octave_freq(freq_target: float,
     # Calculate j_min / j_max (band number min / max)
     if freq_low <= 2/largest_tau_window and override is False:
         print('largest data window duration is too small for freq_low... taking lowest possible...')
-        j_min = np.ceil(band_order * np.log2(2/(largest_tau_window*freq_target)) + 0.5)
+        # This is taken from equation 69b
+        j_min = np.floor(band_order * np.log2(2/(largest_tau_window*freq_target)) + 0.001)
     else:
-        j_min = np.ceil(band_order * np.log2(freq_low/freq_target))
+        j_min = np.floor(band_order * np.log2(freq_low/freq_target))
 
     if freq_high >= freq_pseudo_sr/2 and override is False:
         print('Nyquist Frequency is too small for freq_high... taking largest possible...')
-        j_max = np.floor(band_order * np.log2(freq_pseudo_sr/(2*freq_target)) - 0.5)
+        # This is taken from equation 69a
+        j_max = np.ceil(band_order * np.log2(freq_pseudo_sr/(2*freq_target)) - 0.001)
     else:
-        j_max = np.floor(band_order * np.log2(freq_high/freq_target))
+        j_max = np.ceil(band_order * np.log2(freq_high/freq_target))
 
-    # Create an array with the j_min to j_max
+    # Create an array with the j_min to j_max (equation 70)
     band_numbers = np.arange(j_min, j_max+1)
 
-    # Compute the octave frequency bands (center frequencies)
+    # Compute the octave frequency bands (center frequencies) (equation 70)
     freq = freq_target * log_scale_base**(band_numbers/band_order)
 
     return freq
