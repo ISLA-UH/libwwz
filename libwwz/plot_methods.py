@@ -29,7 +29,7 @@ def make_linear_freq_plot_grid(freq_mat: np.ndarray) -> np.ndarray:
     freq_bounds = np.append(freq_lows, freq_highest)
 
     # Tile the freq_bounds to create a grid
-    freq_grid = np.tile(freq_bounds, (freq_mat.shape[0], 1))
+    freq_grid = np.tile(freq_bounds, (freq_mat.shape[0] + 1, 1))
 
     return freq_grid
 
@@ -48,14 +48,14 @@ def make_octave_freq_plot_grid(freq_mat: np.ndarray, band_order: float, log_scal
     freq_centers = freq_mat[0, :]
 
     # Convert the center frequencies to low frequencies
-    freq_lows = freq_centers / log_scale_base**(1/(2*band_order))
+    freq_lows = freq_centers / log_scale_base**(1 / (2 * band_order))
 
     # Append the high frequency at the end to get all the boundaries
-    freq_highest = freq_centers.max() * log_scale_base**(1/(2*band_order))
+    freq_highest = freq_centers.max() * log_scale_base**(1 / (2 * band_order))
     freq_bounds = np.append(freq_lows, freq_highest)
 
     # Tile the freq_bounds to create a grid
-    freq_grid = np.tile(freq_bounds, (freq_mat.shape[0], 1))
+    freq_grid = np.tile(freq_bounds, (freq_mat.shape[0] + 1, 1))
 
     return freq_grid
 
@@ -70,6 +70,9 @@ def make_tau_plot_grid(tau_mat: np.ndarray) -> np.ndarray:
 
     # Get the tau values from tau_mat
     taus = tau_mat[:, 0]
+
+    # Append one tau value for edge limit by adding the step to the largest tau
+    taus = np.append(taus, taus[-1] + taus[1] - taus[0])
 
     # Tile the taus with an additional column to create grid that matches freq_grid
     tau_grid = np.tile(taus, (tau_mat.shape[1] + 1, 1)).transpose()
@@ -125,7 +128,7 @@ def octave_plotter(ax: axes, TAU: np.ndarray, FREQ: np.ndarray, DATA: np.ndarray
     # Add color bar, fix y_scale, and fix y_ticks
     ax.figure.colorbar(im, ax=ax)
     if log_y_scale is True:
-        ax.set_yscale('log', basey=log_scale_base)
+        ax.set_yscale('log', base=log_scale_base)
     ax.set_yticks(FREQ[0, :])
     ax.get_yaxis().set_major_formatter(ticker.ScalarFormatter())
 
