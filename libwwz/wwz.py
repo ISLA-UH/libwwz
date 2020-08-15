@@ -73,14 +73,14 @@ def make_octave_freq(freq_target: float,
     if freq_low <= 2 / largest_tau_window and override is False:
         print('largest data window duration is too small for freq_low... taking lowest possible...')
         # This is taken from equation 69b
-        j_min = np.floor(band_order * np.log2(2 / (largest_tau_window * freq_target)) + 0.001)
+        j_min = np.floor(band_order * np.log2(2 / (largest_tau_window * freq_target))) + 1
     else:
         j_min = np.floor(band_order * np.log2(freq_low / freq_target))
 
     if freq_high >= freq_pseudo_sr / 2 and override is False:
         print('Nyquist Frequency is too small for freq_high... taking largest possible...')
         # This is taken from equation 69a
-        j_max = np.ceil(band_order * np.log2(freq_pseudo_sr / (2 * freq_target)) - 0.001)
+        j_max = np.ceil(band_order * np.log2(freq_pseudo_sr / (2 * freq_target))) - 1
     else:
         j_max = np.ceil(band_order * np.log2(freq_high / freq_target))
 
