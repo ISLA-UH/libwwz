@@ -253,7 +253,7 @@ def wwt(timestamps: np.ndarray,
                     dmat = np.linalg.inv(dmat)
 
                 # set dcoef and dpower
-                dcoef = dmat.dot(dvec)
+                dcoef = dmat.dot(dvec)  # y1, y2, and y3 from eq. 4-4, with 5-5, 6, 7
                 dpower = np.dot(dcoef, dvec) - (davew ** 2)  # weighted model function eq. 5-10
 
                 dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))  # WWZ eq. 5-12
