@@ -132,7 +132,7 @@ def wwt(timestamps: np.ndarray,
     # noinspection PyArgumentList
     largest_tau_window = np.diff(tau).max()
     print('Pseudo sample frequency is ', np.round(freq_pseudo_sr, 3))
-    print('largest tau widow is ', np.round(largest_tau_window, 3))
+    print('largest tau window is ', np.round(largest_tau_window, 3))
 
     # Frequencies to compute WWZ
     if method == 'linear':
