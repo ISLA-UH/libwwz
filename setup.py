@@ -5,7 +5,7 @@ with open("requirements.txt", "r") as requirements_file:
     requirements = list(filter(lambda line: (not line.startswith("#")) and len(line) > 0, requirements))
 
 setup(name="libwwz",
-      version="0.1.3",
+      version="1.0.0",
       url='https://bitbucket.org/redvoxhi/libwwz/src/master/',
       license='Apache',
       author='RedVox',
@@ -13,7 +13,7 @@ setup(name="libwwz",
       description='Library for computing the weighted wavelet Z transform.',
       packages=find_packages(include=[
           "libwwz",
-          "plotting",
+          "plot_methods",
       ],
           exclude=['tests']),
       long_description_content_type='text/markdown',
