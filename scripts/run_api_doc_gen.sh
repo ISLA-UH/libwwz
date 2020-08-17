@@ -9,4 +9,6 @@ set -o nounset
 set -o errexit
 set -o xtrace
 
+cd ..
+
 pdoc3 --html -c show_type_annotations=True -o docs libwwz

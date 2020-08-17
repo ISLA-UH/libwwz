@@ -5,6 +5,8 @@ if ! [[ -x "$(command -v pylint)" ]]; then
   exit 1
 fi
 
+cd ..
+
 set -o nounset
 set -o errexit
 set -o xtrace

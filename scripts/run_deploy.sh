@@ -22,5 +22,7 @@ set -o nounset
 set -o errexit
 set -o xtrace
 
+cd ..
+
 python3 setup.py sdist bdist_wheel
 twine upload -r pypi --username ${USER} --password ${PASS} dist/*
