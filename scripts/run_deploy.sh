@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script builds and deploys the libwwz library to PyPi.  A valid PyPi username and password are required.
+
 
 USER=${1}
 PASS=${2}

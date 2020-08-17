@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Run unit tests provided for the libwwz codebase.
 
 set -o nounset
 set -o errexit

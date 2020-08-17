@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script generates API documentation for the libwwz library and places the output in libwwz/docs.
+
 
 if ! [[ -x "$(command -v pdoc3)" ]]; then
   echo 'Error: pdoc3 is not installed.' >&2
