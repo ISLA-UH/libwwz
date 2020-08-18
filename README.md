@@ -31,11 +31,18 @@ import libwwz
 result: np.ndarray = libwwz.wwt(...)
 ```
 
+### Examples
+
 Full examples can be found in the [examples directory](https://bitbucket.org/redvoxhi/libwwz/src/master/examples/).
+
+### Demos
+
+1. [Sinusoid with Randomly Removed Data](https://redvoxhi.bitbucket.io/libwwz/v1.0.0/demo_1.html)
+2. [Smartphone Accelerometer Data](https://redvoxhi.bitbucket.io/libwwz/v1.0.0/demo_2.html)
 
 ### API Documentation
 
-API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v0.1.1/
+API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v1.0.0/index.html
 
 ### Development
 
