@@ -113,7 +113,8 @@ def wwt(timestamps: np.ndarray,
     :param freq_params: A list containing parameters for making frequency bands to analyze over with given 'method'
             'linear' -> [freq_low, freq_high, freq_step, override]
             'octave' -> [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
-    :param decay_constant: decay constant for the Morlet wavelet (negligible <0.02)
+    :param decay_constant: decay constant for the Morlet wavelet (negligible <0.02) eq. 1-2
+            c = 1/(2w), where w = 2 * pi * f
     :param method: determines method of creating freq ('linear', 'octave') default 'linear'
     :param parallel: boolean indicate to use parallel processing or not
     :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
