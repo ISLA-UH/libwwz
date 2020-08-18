@@ -44,6 +44,14 @@ Full examples can be found in the [examples directory](https://bitbucket.org/red
 
 API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v1.0.0/index.html
 
+### Contributors and Funding
+
+This project was funded by Consortium of Enabling Technologies and Innovation (ETI) under 
+the Department of Energy (DOE) through University of Hawai'i.
+
+I would like to thank my advisor Milton A. Garces, Ph.D. for the continuing support and advice on this code.
+
+
 ### Development
 
 Contributions are welcome.
