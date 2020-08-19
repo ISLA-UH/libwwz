@@ -129,10 +129,12 @@ def wwt(timestamps: np.ndarray,
     ntau: int = len(tau)
 
     # Calculate pseudo sample rate and largest time window to check for requirements
-    freq_pseudo_sr = 1 / np.diff(timestamps).mean()  # 1 / average period
+    freq_pseudo_sr_mean = 1 / np.diff(timestamps).mean()  # 1 / average period
+    freq_pseudo_sr_median = 1 / np.median(np.diff(timestamps))  # 1 / median period
     # noinspection PyArgumentList
     largest_tau_window = np.diff(tau).max()
-    print('Pseudo sample frequency is ', np.round(freq_pseudo_sr, 3))
+    print('Mean pseudo sample frequency is ', np.round(freq_pseudo_sr_mean, 3))
+    print('Median pseudo sample frequency is ', np.round(freq_pseudo_sr_median, 3))
     print('largest tau window is ', np.round(largest_tau_window, 3))
 
     # Frequencies to compute WWZ
