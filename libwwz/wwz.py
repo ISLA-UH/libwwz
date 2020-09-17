@@ -132,7 +132,7 @@ def wwt(timestamps: np.ndarray,
     freq_pseudo_sr = 1 / np.median(np.diff(timestamps))  # 1 / median period
 
     # noinspection PyArgumentList
-    largest_tau_window = np.diff(tau).max()
+    largest_tau_window = tau[1] - tau[0]
     print('Pseudo sample frequency (median) is ', np.round(freq_pseudo_sr, 3))
     print('largest tau window is ', np.round(largest_tau_window, 3))
 
