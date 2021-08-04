@@ -5,7 +5,7 @@ with open("requirements.txt", "r") as requirements_file:
     requirements = list(filter(lambda line: (not line.startswith("#")) and len(line) > 0, requirements))
 
 setup(name="libwwz",
-      version="1.0.0",
+      version="1.1.0",
       url='https://bitbucket.org/redvoxhi/libwwz/src/master/',
       license='Apache',
       author='RedVox',
@@ -19,4 +19,4 @@ setup(name="libwwz",
       long_description_content_type='text/markdown',
       long_description=open('README.md').read(),
       install_requires=requirements,
-      python_requires=">=3.6")
+      python_requires=">=3.7")
