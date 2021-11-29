@@ -14,7 +14,8 @@ import time
 import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
-import tests.beta_wwz as beta
+# import tests.beta_wwz as beta
+import libwwz.wwz as beta
 import libwwz.plot_methods as wwz_plot
 
 # Select Mode...
