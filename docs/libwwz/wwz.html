@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>libwwz.wwz API documentation</title>
+<meta name="description" content="This module provides functions for computing the weighted wavelet z transform over input values." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>libwwz.wwz</code></h1>
+</header>
+<section id="section-intro">
+<p>This module provides functions for computing the weighted wavelet z transform over input values.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+This module provides functions for computing the weighted wavelet z transform over input values.
+&#34;&#34;&#34;
+
+from typing import List
+
+# noinspection Mypy
+import numpy as np
+# noinspection Mypy
+from joblib import Parallel, delayed
+import multiprocessing
+import time
+
+
+def make_tau(timestamps: np.ndarray,
+             time_divisions: int) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of times with given timestamps and time divisions to iterate over in the wwt code.
+    :param timestamps: An array with corresponding times for the magnitude (payload).
+    :param time_divisions: number of divisions for the new timestamps
+    :return: tau
+    &#34;&#34;&#34;
+
+    # Check to see if time_divisions is smaller than timestamps (replace if larger)
+    if time_divisions &gt; len(timestamps):
+        time_divisions = len(timestamps)
+        print(&#39;adjusted time_divisions to: &#39;, time_divisions)
+
+    # Make tau
+    tau: np.ndarray = np.linspace(timestamps[0], timestamps[-1], time_divisions)
+
+    return tau
+
+
+def make_freq(freq_low: float,
+              freq_high: float,
+              freq_steps: float, ) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
+    :param freq_low: The low end of frequency to cast WWZ
+    :param freq_high: The high end of frequency to cast WWZ
+    :param freq_steps: The frequency steps for casting WWZ
+    :return: freq
+    &#34;&#34;&#34;
+    freq: np.ndarray = np.arange(freq_low, freq_high + freq_steps, freq_steps)
+
+    return freq
+
+
+def make_octave_freq(freq_target: float,
+                     freq_low: float,
+                     freq_high: float,
+                     band_order: float,
+                     log_scale_base: float,
+                     freq_pseudo_sr: float,
+                     largest_tau_window: float,
+                     override: bool) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of frequencies based on Milton Garces&#39; Constant-Q standardized Inferno framework (2013)
+    Recommend &#34;Constant-Q Gabor Atoms for Sparse Binary Representations of Cyber-Physical Signatures&#34; (Garces 2020)
+    :param freq_target: target frequency / frequency of interest
+    :param freq_low: desired minimum frequency to be contained
+    :param freq_high: desired maximum frequncy to be contained
+    :param band_order: octave band order (N =&gt; 1) *Recommend N = (1, 3, 6, 12, 24,...)
+    :param log_scale_base: logarithmic scale base to create the octaves
+    :param freq_pseudo_sr: pseudo sample rate of the data by taking the average
+    :param largest_tau_window: largest tau window made from make_tau function
+    :param override: Override the freq_low and freq_high restrictions
+    :return:
+    &#34;&#34;&#34;
+    # Check and fix if the freq_low and freq_high meet requirements [CAN BE OVERRIDE]
+    # Calculate j_min / j_max (band number min / max)
+    if freq_low &lt;= 2 / largest_tau_window and override is False:
+        print(&#39;largest data window duration is too small for freq_low... taking lowest possible...&#39;)
+        # This is taken from equation 69b
+        j_min = np.floor(band_order * np.log2(2 / (largest_tau_window * freq_target))) + 1
+    else:
+        j_min = np.floor(band_order * np.log2(freq_low / freq_target))
+
+    if freq_high &gt;= freq_pseudo_sr / 2 and override is False:
+        print(&#39;Nyquist Frequency is too small for freq_high... taking largest possible...&#39;)
+        # This is taken from equation 69a
+        j_max = np.ceil(band_order * np.log2(freq_pseudo_sr / (2 * freq_target))) - 1
+    else:
+        j_max = np.ceil(band_order * np.log2(freq_high / freq_target))
+
+    # Create an array with the j_min to j_max (equation 70)
+    band_numbers = np.arange(j_min, j_max + 1)
+
+    # Compute the octave frequency bands (center frequencies) (equation 70)
+    freq = freq_target * log_scale_base ** (band_numbers / band_order)
+
+    return freq
+
+
+def wwt(timestamps: np.ndarray,
+        magnitudes: np.ndarray,
+        time_divisions: int,
+        freq_params: list,
+        decay_constant: float,
+        method: str = &#39;linear&#39;,
+        parallel: bool = True) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    The code is based on G. Foster&#39;s FORTRAN
+    code as well as eaydin&#39;s python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+    It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+    and effective number. Specific equations can be found on Grant Foster&#39;s &#34;WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+    SAMPLED TIME SERIES&#34;. Some of the equations are labeled in the code with corresponding numbers.
+
+    :param timestamps: An array with corresponding times for the magnitude (payload).
+    :param magnitudes: An array with payload values
+    :param time_divisions: number of divisions for the new timestamps
+    :param freq_params: A list containing parameters for making frequency bands to analyze over with given &#39;method&#39;
+            &#39;linear&#39; -&gt; [freq_low, freq_high, freq_step, override]
+            &#39;octave&#39; -&gt; [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
+    :param decay_constant: decay constant for the Morlet wavelet (should be &lt;0.02) eq. 1-2
+            c = 1/(2w), the wavelet decays significantly after a single cycle of 2 * pi / w
+    :param method: determines method of creating freq (&#39;linear&#39;, &#39;octave&#39;) default &#39;linear&#39;
+    :param parallel: boolean indicate to use parallel processing or not
+    :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
+    &#34;&#34;&#34;
+
+    # Starting Weighted Wavelet Z-transform and start timer...
+    print(&#34;*** Starting Weighted Wavelet Z-transform ***\n&#34;)
+    process_starttime: float = time.time()
+
+    # Get taus to compute WWZ (referred in paper as &#34;time shift(s)&#34;)
+    tau: np.ndarray = make_tau(timestamps, time_divisions)
+    ntau: int = len(tau)
+
+    # Calculate pseudo sample rate and largest time window to check for requirements
+    freq_pseudo_sr = 1 / np.median(np.diff(timestamps))  # 1 / median period
+
+    # noinspection PyArgumentList
+    largest_tau_window = tau[1] - tau[0]
+    print(&#39;Pseudo sample frequency (median) is &#39;, np.round(freq_pseudo_sr, 3))
+    print(&#39;largest tau window is &#39;, np.round(largest_tau_window, 3))
+
+    # Frequencies to compute WWZ
+    if method == &#39;linear&#39;:
+        freq: np.ndarray = make_freq(freq_low=freq_params[0],
+                                     freq_high=freq_params[1],
+                                     freq_steps=freq_params[2])
+        nfreq: int = len(freq)
+
+    elif method == &#39;octave&#39;:
+        freq = make_octave_freq(freq_target=freq_params[0],
+                                freq_low=freq_params[1],
+                                freq_high=freq_params[2],
+                                band_order=freq_params[3],
+                                log_scale_base=freq_params[4],
+                                freq_pseudo_sr=freq_pseudo_sr,
+                                largest_tau_window=largest_tau_window,
+                                override=freq_params[5])
+        nfreq = len(freq)
+
+    # Get number of data from timestamps
+    numdat: int = len(timestamps)
+
+    # Get number of CPU cores on current device (used for parallel)
+    num_cores = multiprocessing.cpu_count()
+
+    # WWT Stars Here
+    def tau_loop(dtau):
+        &#34;&#34;&#34;
+        Replaced the for loop of the taus (&#34;time shifts&#34;) for parallel processing.
+        Comments include connections to the formula given in the Foster96.
+        :param dtau: one of the taus being iterated
+        :return: a single entry of Tau, Freq, WWZ, AMP, COEF, NEFF corresponding to dtau
+        &#34;&#34;&#34;
+        # Initialize the outputs for each iteration
+        index: int = 0
+        output: np.ndarray = np.empty((len(freq), 6))
+        nstart: int = 1
+        dvarw: float = 0.0
+
+        # loop over each interested &#34;frequency&#34; over the &#34;time shifts&#34;
+        for dfreq in freq:
+            # Initialize a vector (3) and matrix (3,3) and dweight2 (sum of dweight**2)
+            dvec: np.ndarray = np.zeros(3)
+            dmat: np.ndarray = np.zeros([3, 3])
+            dweight2: float = 0.0
+            # Get Scale Factor (referred in paper as &#34;frequency&#34;)
+            domega: float = 2.0 * np.pi * dfreq
+
+            # Discrete wavelet transform (DWT)
+            # Lots of math here, but basically doing the summations shown in the paper
+            for idat in range(nstart, numdat):
+                # Get dweight (an element of &#34;local data number&#34; viewed as &#34;weights&#34; in the paper)
+                dz: float = domega * (timestamps[idat] - dtau)
+                dweight: float = np.exp(-1 * decay_constant * dz ** 2)
+
+                # get upper triangular matrix of the weights and vector
+                # These are used later to calculate Neff, DWT, DWP, etc in the paper
+                if dweight &gt; 10 ** -9:
+                    cos_dz: float = np.cos(dz)
+                    sin_dz: float = np.sin(dz)
+                    dweight2 += dweight ** 2
+                    dvarw += dweight * magnitudes[idat] ** 2  # Used to get &#34;weighted variation&#34; later
+
+                    dmat[0, 0] += dweight
+                    dmat[0, 1] += dweight * cos_dz
+                    dmat[0, 2] += dweight * sin_dz
+                    dmat[1, 1] += dweight * cos_dz ** 2
+                    dmat[1, 2] += dweight * cos_dz * sin_dz
+                    dmat[2, 2] += dweight * sin_dz ** 2
+
+                    # parallel to the 3 trial functions (5-5, 6, 7)
+                    dvec[0] += dweight * magnitudes[idat]
+                    dvec[1] += dweight * magnitudes[idat] * cos_dz
+                    dvec[2] += dweight * magnitudes[idat] * sin_dz
+
+                elif dz &gt; 0:
+                    break
+                else:
+                    nstart = idat + 1
+
+            # Get dneff (&#34;effective number&#34; for weighted projection)
+            if dweight2 &gt; 0:
+                # This is equation 5-4 in the paper
+                dneff: float = (dmat[0, 0] ** 2) / dweight2
+            else:
+                dneff = 0.0
+
+            # Get damp, dpower, dpowz
+            dcoef: List[int] = [0, 0, 0]
+
+            if dneff &gt; 3:
+                dvec = dvec / dmat[0, 0]
+                # avoid for loops
+                dmat[..., 1:] /= dmat[0, 0]
+
+                if dmat[0, 0] &gt; 0.005:
+                    dvarw = dvarw / dmat[0, 0]
+                else:
+                    dvarw = 0.0
+
+                # some initialize
+                dmat[0, 0] = 1.0
+                davew: float = dvec[0]
+                dvarw = dvarw - (davew ** 2)  # &#34;weighted variation&#34; eq. 5-9
+
+                if dvarw &lt;= 0.0:
+                    dvarw = 10 ** -12
+
+                # avoid for loops
+                dmat[1, 0] = dmat[0, 1]
+                dmat[2, 0] = dmat[0, 2]
+                dmat[2, 1] = dmat[1, 2]
+
+                if np.linalg.det(dmat) == 0:
+                    dmat = np.linalg.pinv(dmat)
+                    print(&#34;determinant is zero, using pseudo-inverse.&#34;)
+                else:
+                    dmat = np.linalg.inv(dmat)
+
+                # set dcoef and dpower
+                dcoef = dmat.dot(dvec)  # y1, y2, and y3 from eq. 4-4, with 5-5, 6, 7
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)  # weighted model function eq. 5-10
+
+                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))  # WWZ eq. 5-12
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)  # WWA eq. 5-14
+            else:
+                dpowz = 0.0
+                damp = 0.0
+
+            if dneff &lt; (10 ** (-9)):
+                dneff = 0.0
+
+            if damp &lt; (10 ** (-9)):
+                damp = 0.0
+
+            if dpowz &lt; (10 ** (-9)):
+                dpowz = 0.0
+
+            # Let&#39;s write everything out.
+            output[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
+
+            index = index + 1
+
+        return output
+
+    # Check if parallel or not
+    if parallel:
+        output = np.array(Parallel(n_jobs=num_cores)(delayed(tau_loop)(dtau) for dtau in tau))
+    else:
+        output = np.empty([ntau, nfreq, 6])
+        for i, dtau in enumerate(tau):
+            output[i] = tau_loop(dtau)
+
+    # Format the output to be in len(tau) by len(freq) matrix for each value with correct labels
+
+    tau_mat: np.ndarray = output[:, :, 0].reshape([ntau, nfreq])
+    freq_mat: np.ndarray = output[:, :, 1].reshape([ntau, nfreq])
+    wwz_mat: np.ndarray = output[:, :, 2].reshape([ntau, nfreq])
+    amp_mat: np.ndarray = output[:, :, 3].reshape([ntau, nfreq])
+    dcoef_mat: np.ndarray = output[:, :, 4].reshape([ntau, nfreq])
+    dneff_mat: np.ndarray = output[:, :, 5].reshape([ntau, nfreq])
+
+    output = np.array([tau_mat, freq_mat, wwz_mat, amp_mat, dcoef_mat, dneff_mat])
+
+    # Finished Weighted Wavelet Z-transform and finish timer...
+    print(round(time.time() - process_starttime, 2), &#39;seconds has passed to complete Weighted Wavelet Z-transform \n&#39;)
+
+    return output</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="libwwz.wwz.make_freq"><code class="name flex">
+<span>def <span class="ident">make_freq</span></span>(<span>freq_low: float, freq_high: float, freq_steps: float) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
+:param freq_low: The low end of frequency to cast WWZ
+:param freq_high: The high end of frequency to cast WWZ
+:param freq_steps: The frequency steps for casting WWZ
+:return: freq</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_freq(freq_low: float,
+              freq_high: float,
+              freq_steps: float, ) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of frequencies with given low, high, and steps to iterate over in the wwt code.
+    :param freq_low: The low end of frequency to cast WWZ
+    :param freq_high: The high end of frequency to cast WWZ
+    :param freq_steps: The frequency steps for casting WWZ
+    :return: freq
+    &#34;&#34;&#34;
+    freq: np.ndarray = np.arange(freq_low, freq_high + freq_steps, freq_steps)
+
+    return freq</code></pre>
+</details>
+</dd>
+<dt id="libwwz.wwz.make_octave_freq"><code class="name flex">
+<span>def <span class="ident">make_octave_freq</span></span>(<span>freq_target: float, freq_low: float, freq_high: float, band_order: float, log_scale_base: float, freq_pseudo_sr: float, largest_tau_window: float, override: bool) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an array of frequencies based on Milton Garces' Constant-Q standardized Inferno framework (2013)
+Recommend "Constant-Q Gabor Atoms for Sparse Binary Representations of Cyber-Physical Signatures" (Garces 2020)
+:param freq_target: target frequency / frequency of interest
+:param freq_low: desired minimum frequency to be contained
+:param freq_high: desired maximum frequncy to be contained
+:param band_order: octave band order (N =&gt; 1) *Recommend N = (1, 3, 6, 12, 24,&hellip;)
+:param log_scale_base: logarithmic scale base to create the octaves
+:param freq_pseudo_sr: pseudo sample rate of the data by taking the average
+:param largest_tau_window: largest tau window made from make_tau function
+:param override: Override the freq_low and freq_high restrictions
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_octave_freq(freq_target: float,
+                     freq_low: float,
+                     freq_high: float,
+                     band_order: float,
+                     log_scale_base: float,
+                     freq_pseudo_sr: float,
+                     largest_tau_window: float,
+                     override: bool) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of frequencies based on Milton Garces&#39; Constant-Q standardized Inferno framework (2013)
+    Recommend &#34;Constant-Q Gabor Atoms for Sparse Binary Representations of Cyber-Physical Signatures&#34; (Garces 2020)
+    :param freq_target: target frequency / frequency of interest
+    :param freq_low: desired minimum frequency to be contained
+    :param freq_high: desired maximum frequncy to be contained
+    :param band_order: octave band order (N =&gt; 1) *Recommend N = (1, 3, 6, 12, 24,...)
+    :param log_scale_base: logarithmic scale base to create the octaves
+    :param freq_pseudo_sr: pseudo sample rate of the data by taking the average
+    :param largest_tau_window: largest tau window made from make_tau function
+    :param override: Override the freq_low and freq_high restrictions
+    :return:
+    &#34;&#34;&#34;
+    # Check and fix if the freq_low and freq_high meet requirements [CAN BE OVERRIDE]
+    # Calculate j_min / j_max (band number min / max)
+    if freq_low &lt;= 2 / largest_tau_window and override is False:
+        print(&#39;largest data window duration is too small for freq_low... taking lowest possible...&#39;)
+        # This is taken from equation 69b
+        j_min = np.floor(band_order * np.log2(2 / (largest_tau_window * freq_target))) + 1
+    else:
+        j_min = np.floor(band_order * np.log2(freq_low / freq_target))
+
+    if freq_high &gt;= freq_pseudo_sr / 2 and override is False:
+        print(&#39;Nyquist Frequency is too small for freq_high... taking largest possible...&#39;)
+        # This is taken from equation 69a
+        j_max = np.ceil(band_order * np.log2(freq_pseudo_sr / (2 * freq_target))) - 1
+    else:
+        j_max = np.ceil(band_order * np.log2(freq_high / freq_target))
+
+    # Create an array with the j_min to j_max (equation 70)
+    band_numbers = np.arange(j_min, j_max + 1)
+
+    # Compute the octave frequency bands (center frequencies) (equation 70)
+    freq = freq_target * log_scale_base ** (band_numbers / band_order)
+
+    return freq</code></pre>
+</details>
+</dd>
+<dt id="libwwz.wwz.make_tau"><code class="name flex">
+<span>def <span class="ident">make_tau</span></span>(<span>timestamps: numpy.ndarray, time_divisions: int) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates an array of times with given timestamps and time divisions to iterate over in the wwt code.
+:param timestamps: An array with corresponding times for the magnitude (payload).
+:param time_divisions: number of divisions for the new timestamps
+:return: tau</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_tau(timestamps: np.ndarray,
+             time_divisions: int) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    Creates an array of times with given timestamps and time divisions to iterate over in the wwt code.
+    :param timestamps: An array with corresponding times for the magnitude (payload).
+    :param time_divisions: number of divisions for the new timestamps
+    :return: tau
+    &#34;&#34;&#34;
+
+    # Check to see if time_divisions is smaller than timestamps (replace if larger)
+    if time_divisions &gt; len(timestamps):
+        time_divisions = len(timestamps)
+        print(&#39;adjusted time_divisions to: &#39;, time_divisions)
+
+    # Make tau
+    tau: np.ndarray = np.linspace(timestamps[0], timestamps[-1], time_divisions)
+
+    return tau</code></pre>
+</details>
+</dd>
+<dt id="libwwz.wwz.wwt"><code class="name flex">
+<span>def <span class="ident">wwt</span></span>(<span>timestamps: numpy.ndarray, magnitudes: numpy.ndarray, time_divisions: int, freq_params: list, decay_constant: float, method: str = 'linear', parallel: bool = True) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The code is based on G. Foster's FORTRAN
+code as well as eaydin's python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+and effective number. Specific equations can be found on Grant Foster's "WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+SAMPLED TIME SERIES". Some of the equations are labeled in the code with corresponding numbers.</p>
+<p>:param timestamps: An array with corresponding times for the magnitude (payload).
+:param magnitudes: An array with payload values
+:param time_divisions: number of divisions for the new timestamps
+:param freq_params: A list containing parameters for making frequency bands to analyze over with given 'method'
+'linear' -&gt; [freq_low, freq_high, freq_step, override]
+'octave' -&gt; [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
+:param decay_constant: decay constant for the Morlet wavelet (should be &lt;0.02) eq. 1-2
+c = 1/(2w), the wavelet decays significantly after a single cycle of 2 * pi / w
+:param method: determines method of creating freq ('linear', 'octave') default 'linear'
+:param parallel: boolean indicate to use parallel processing or not
+:return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wwt(timestamps: np.ndarray,
+        magnitudes: np.ndarray,
+        time_divisions: int,
+        freq_params: list,
+        decay_constant: float,
+        method: str = &#39;linear&#39;,
+        parallel: bool = True) -&gt; np.ndarray:
+    &#34;&#34;&#34;
+    The code is based on G. Foster&#39;s FORTRAN
+    code as well as eaydin&#39;s python 2.7 code. The code is updated to use numpy methods and allow for float value tau.
+    It returns an array with matrix of new evenly spaced timestamps, frequencies, wwz-power, amplitude, coefficients,
+    and effective number. Specific equations can be found on Grant Foster&#39;s &#34;WAVELETS FOR PERIOD ANALYSIS OF UNEVENLY
+    SAMPLED TIME SERIES&#34;. Some of the equations are labeled in the code with corresponding numbers.
+
+    :param timestamps: An array with corresponding times for the magnitude (payload).
+    :param magnitudes: An array with payload values
+    :param time_divisions: number of divisions for the new timestamps
+    :param freq_params: A list containing parameters for making frequency bands to analyze over with given &#39;method&#39;
+            &#39;linear&#39; -&gt; [freq_low, freq_high, freq_step, override]
+            &#39;octave&#39; -&gt; [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
+    :param decay_constant: decay constant for the Morlet wavelet (should be &lt;0.02) eq. 1-2
+            c = 1/(2w), the wavelet decays significantly after a single cycle of 2 * pi / w
+    :param method: determines method of creating freq (&#39;linear&#39;, &#39;octave&#39;) default &#39;linear&#39;
+    :param parallel: boolean indicate to use parallel processing or not
+    :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
+    &#34;&#34;&#34;
+
+    # Starting Weighted Wavelet Z-transform and start timer...
+    print(&#34;*** Starting Weighted Wavelet Z-transform ***\n&#34;)
+    process_starttime: float = time.time()
+
+    # Get taus to compute WWZ (referred in paper as &#34;time shift(s)&#34;)
+    tau: np.ndarray = make_tau(timestamps, time_divisions)
+    ntau: int = len(tau)
+
+    # Calculate pseudo sample rate and largest time window to check for requirements
+    freq_pseudo_sr = 1 / np.median(np.diff(timestamps))  # 1 / median period
+
+    # noinspection PyArgumentList
+    largest_tau_window = tau[1] - tau[0]
+    print(&#39;Pseudo sample frequency (median) is &#39;, np.round(freq_pseudo_sr, 3))
+    print(&#39;largest tau window is &#39;, np.round(largest_tau_window, 3))
+
+    # Frequencies to compute WWZ
+    if method == &#39;linear&#39;:
+        freq: np.ndarray = make_freq(freq_low=freq_params[0],
+                                     freq_high=freq_params[1],
+                                     freq_steps=freq_params[2])
+        nfreq: int = len(freq)
+
+    elif method == &#39;octave&#39;:
+        freq = make_octave_freq(freq_target=freq_params[0],
+                                freq_low=freq_params[1],
+                                freq_high=freq_params[2],
+                                band_order=freq_params[3],
+                                log_scale_base=freq_params[4],
+                                freq_pseudo_sr=freq_pseudo_sr,
+                                largest_tau_window=largest_tau_window,
+                                override=freq_params[5])
+        nfreq = len(freq)
+
+    # Get number of data from timestamps
+    numdat: int = len(timestamps)
+
+    # Get number of CPU cores on current device (used for parallel)
+    num_cores = multiprocessing.cpu_count()
+
+    # WWT Stars Here
+    def tau_loop(dtau):
+        &#34;&#34;&#34;
+        Replaced the for loop of the taus (&#34;time shifts&#34;) for parallel processing.
+        Comments include connections to the formula given in the Foster96.
+        :param dtau: one of the taus being iterated
+        :return: a single entry of Tau, Freq, WWZ, AMP, COEF, NEFF corresponding to dtau
+        &#34;&#34;&#34;
+        # Initialize the outputs for each iteration
+        index: int = 0
+        output: np.ndarray = np.empty((len(freq), 6))
+        nstart: int = 1
+        dvarw: float = 0.0
+
+        # loop over each interested &#34;frequency&#34; over the &#34;time shifts&#34;
+        for dfreq in freq:
+            # Initialize a vector (3) and matrix (3,3) and dweight2 (sum of dweight**2)
+            dvec: np.ndarray = np.zeros(3)
+            dmat: np.ndarray = np.zeros([3, 3])
+            dweight2: float = 0.0
+            # Get Scale Factor (referred in paper as &#34;frequency&#34;)
+            domega: float = 2.0 * np.pi * dfreq
+
+            # Discrete wavelet transform (DWT)
+            # Lots of math here, but basically doing the summations shown in the paper
+            for idat in range(nstart, numdat):
+                # Get dweight (an element of &#34;local data number&#34; viewed as &#34;weights&#34; in the paper)
+                dz: float = domega * (timestamps[idat] - dtau)
+                dweight: float = np.exp(-1 * decay_constant * dz ** 2)
+
+                # get upper triangular matrix of the weights and vector
+                # These are used later to calculate Neff, DWT, DWP, etc in the paper
+                if dweight &gt; 10 ** -9:
+                    cos_dz: float = np.cos(dz)
+                    sin_dz: float = np.sin(dz)
+                    dweight2 += dweight ** 2
+                    dvarw += dweight * magnitudes[idat] ** 2  # Used to get &#34;weighted variation&#34; later
+
+                    dmat[0, 0] += dweight
+                    dmat[0, 1] += dweight * cos_dz
+                    dmat[0, 2] += dweight * sin_dz
+                    dmat[1, 1] += dweight * cos_dz ** 2
+                    dmat[1, 2] += dweight * cos_dz * sin_dz
+                    dmat[2, 2] += dweight * sin_dz ** 2
+
+                    # parallel to the 3 trial functions (5-5, 6, 7)
+                    dvec[0] += dweight * magnitudes[idat]
+                    dvec[1] += dweight * magnitudes[idat] * cos_dz
+                    dvec[2] += dweight * magnitudes[idat] * sin_dz
+
+                elif dz &gt; 0:
+                    break
+                else:
+                    nstart = idat + 1
+
+            # Get dneff (&#34;effective number&#34; for weighted projection)
+            if dweight2 &gt; 0:
+                # This is equation 5-4 in the paper
+                dneff: float = (dmat[0, 0] ** 2) / dweight2
+            else:
+                dneff = 0.0
+
+            # Get damp, dpower, dpowz
+            dcoef: List[int] = [0, 0, 0]
+
+            if dneff &gt; 3:
+                dvec = dvec / dmat[0, 0]
+                # avoid for loops
+                dmat[..., 1:] /= dmat[0, 0]
+
+                if dmat[0, 0] &gt; 0.005:
+                    dvarw = dvarw / dmat[0, 0]
+                else:
+                    dvarw = 0.0
+
+                # some initialize
+                dmat[0, 0] = 1.0
+                davew: float = dvec[0]
+                dvarw = dvarw - (davew ** 2)  # &#34;weighted variation&#34; eq. 5-9
+
+                if dvarw &lt;= 0.0:
+                    dvarw = 10 ** -12
+
+                # avoid for loops
+                dmat[1, 0] = dmat[0, 1]
+                dmat[2, 0] = dmat[0, 2]
+                dmat[2, 1] = dmat[1, 2]
+
+                if np.linalg.det(dmat) == 0:
+                    dmat = np.linalg.pinv(dmat)
+                    print(&#34;determinant is zero, using pseudo-inverse.&#34;)
+                else:
+                    dmat = np.linalg.inv(dmat)
+
+                # set dcoef and dpower
+                dcoef = dmat.dot(dvec)  # y1, y2, and y3 from eq. 4-4, with 5-5, 6, 7
+                dpower = np.dot(dcoef, dvec) - (davew ** 2)  # weighted model function eq. 5-10
+
+                dpowz: float = (dneff - 3.0) * dpower / (2.0 * (dvarw - dpower))  # WWZ eq. 5-12
+                damp = np.sqrt(dcoef[1] ** 2 + dcoef[2] ** 2)  # WWA eq. 5-14
+            else:
+                dpowz = 0.0
+                damp = 0.0
+
+            if dneff &lt; (10 ** (-9)):
+                dneff = 0.0
+
+            if damp &lt; (10 ** (-9)):
+                damp = 0.0
+
+            if dpowz &lt; (10 ** (-9)):
+                dpowz = 0.0
+
+            # Let&#39;s write everything out.
+            output[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
+
+            index = index + 1
+
+        return output
+
+    # Check if parallel or not
+    if parallel:
+        output = np.array(Parallel(n_jobs=num_cores)(delayed(tau_loop)(dtau) for dtau in tau))
+    else:
+        output = np.empty([ntau, nfreq, 6])
+        for i, dtau in enumerate(tau):
+            output[i] = tau_loop(dtau)
+
+    # Format the output to be in len(tau) by len(freq) matrix for each value with correct labels
+
+    tau_mat: np.ndarray = output[:, :, 0].reshape([ntau, nfreq])
+    freq_mat: np.ndarray = output[:, :, 1].reshape([ntau, nfreq])
+    wwz_mat: np.ndarray = output[:, :, 2].reshape([ntau, nfreq])
+    amp_mat: np.ndarray = output[:, :, 3].reshape([ntau, nfreq])
+    dcoef_mat: np.ndarray = output[:, :, 4].reshape([ntau, nfreq])
+    dneff_mat: np.ndarray = output[:, :, 5].reshape([ntau, nfreq])
+
+    output = np.array([tau_mat, freq_mat, wwz_mat, amp_mat, dcoef_mat, dneff_mat])
+
+    # Finished Weighted Wavelet Z-transform and finish timer...
+    print(round(time.time() - process_starttime, 2), &#39;seconds has passed to complete Weighted Wavelet Z-transform \n&#39;)
+
+    return output</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="libwwz" href="index.html">libwwz</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="libwwz.wwz.make_freq" href="#libwwz.wwz.make_freq">make_freq</a></code></li>
+<li><code><a title="libwwz.wwz.make_octave_freq" href="#libwwz.wwz.make_octave_freq">make_octave_freq</a></code></li>
+<li><code><a title="libwwz.wwz.make_tau" href="#libwwz.wwz.make_tau">make_tau</a></code></li>
+<li><code><a title="libwwz.wwz.wwt" href="#libwwz.wwz.wwt">wwt</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
