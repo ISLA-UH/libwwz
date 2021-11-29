@@ -14,8 +14,7 @@ import time
 import matplotlib.pyplot as plt
 # noinspection Mypy
 import numpy as np
-# import tests.beta_wwz as beta
-import libwwz.wwz as beta
+import libwwz.wwz as wwz
 import libwwz.plot_methods as wwz_plot
 
 # Select Mode...
@@ -82,15 +81,15 @@ def run_examples() -> None:
     # Get the WWZ/WWA of the signals (linear)
     # 'linear'
     starttime = time.time()
-    WWZ_simple_linear = beta.wwt(timestamp, simple_signal, ntau, freq_lin, c, 'linear')
+    WWZ_simple_linear = wwz.wwt(timestamp, simple_signal, ntau, freq_lin, c, 'linear')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_linear)')
-    WWZ_simple_removed_linear = beta.wwt(timestamp_removed, simple_removed, ntau, freq_lin, c, 'linear')
+    WWZ_simple_removed_linear = wwz.wwt(timestamp_removed, simple_removed, ntau, freq_lin, c, 'linear')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_removed_linear)')
 
     # 'octave'
-    WWZ_simple_octave = beta.wwt(timestamp, simple_signal, ntau, freq_oct, c, 'octave')
+    WWZ_simple_octave = wwz.wwt(timestamp, simple_signal, ntau, freq_oct, c, 'octave')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_octave)')
-    WWZ_simple_removed_octave = beta.wwt(timestamp_removed, simple_removed, ntau, freq_oct, c, 'octave')
+    WWZ_simple_removed_octave = wwz.wwt(timestamp_removed, simple_removed, ntau, freq_oct, c, 'octave')
     print(round(time.time() - starttime, 2), 'seconds has passed (finished WWZ_simple_removed_octave)')
 
     # Plot
