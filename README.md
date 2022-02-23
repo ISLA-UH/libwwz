@@ -18,7 +18,7 @@ pip install libwwz
 
 #### Install from source
 
-* Clone this repository from https://bitbucket.org/redvoxhi/libwwz/src/master/
+* Clone this repository from https://github.com/RedVoxInc/libwwz/
 * Run `pip3 install . --upgrade --no-cache` from the project root
 
 ### Usage
@@ -33,23 +33,18 @@ result: np.ndarray = libwwz.wwt(...)
 
 ### Examples
 
-Full examples can be found in the [examples directory](https://bitbucket.org/redvoxhi/libwwz/src/master/examples/).
-
-### Demos
-
-1. [Sinusoid with Randomly Removed Data](https://redvoxhi.bitbucket.io/libwwz/v1.0.0/demo_1.html)
-2. [Smartphone Accelerometer Data](https://redvoxhi.bitbucket.io/libwwz/v1.0.0/demo_2.html)
+Full examples can be found in the [examples directory](https://github.com/RedVoxInc/libwwz/blob/master/examples/example_wwz.py).
 
 ### API Documentation
 
-API documentation is available at: https://redvoxhi.bitbucket.io/libwwz/v1.0.0/index.html
+API documentation is available at: https://redvoxinc.github.io/libwwz/
 
 ### Contributors and Funding
 
 This project was funded by Consortium of Enabling Technologies and Innovation (ETI) under 
-the Department of Energy (DOE) through University of Hawai'i.
+the Department of Energy (DOE) through University of Hawaiʻi.
 
-I would like to thank my advisor Milton A. Garces, Ph.D. for the continuing support and advice on this code.
+I would like to thank my advisor Milton A. Garcés, Ph.D. for the continuing support and advice on this code.
 
 
 ### Development

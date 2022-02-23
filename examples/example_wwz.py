@@ -3,7 +3,7 @@ This module provides examples demonstrating the WWZ by looking at a simple signa
 
 Please select whether to run in parallel or not.
 There are 'linear' method and 'octave' method.
-current example showcases the 'octave' method...
+current example showcases both methods
 
 NOTE: The WWZ shows better information on frequency and WWA shows better information on amplitude.
 """
@@ -71,7 +71,6 @@ def run_examples() -> None:
 
     # Create simple signal (2hz)
     sine_2hz = np.sin(timestamp * 2 * (2 * np.pi))
-
     simple_signal = sine_2hz
 
     # Remove 80% of the signal at random
