@@ -54,7 +54,7 @@ Contributions are welcome.
 If you would like to contribute:
 
 * Open a new issue on BitBucket
-* Fork and then clone this repository (https://bitbucket.org/redvoxhi/libwwz/src/master/)
+* Fork and then clone this repository (https://github.com/RedVoxInc/libwwz/)
 * Install the development requirements in `dev_requirements.txt` with `pip install -r dev_requirements.txt`
 * Create a new branch in your forked repo following the format of `issue-[issue number]`
 * Make your modifications, commit, and push to your forked repository
