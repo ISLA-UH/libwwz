@@ -5,7 +5,7 @@ with open("requirements.txt", "r") as requirements_file:
     requirements = list(filter(lambda line: (not line.startswith("#")) and len(line) > 0, requirements))
 
 setup(name="libwwz",
-      version="1.1.0",
+      version="1.2.0",
       url='https://bitbucket.org/redvoxhi/libwwz/src/master/',
       license='Apache',
       author='RedVox',
