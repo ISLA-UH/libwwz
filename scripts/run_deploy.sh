@@ -26,5 +26,12 @@ set -o xtrace
 
 cd ..
 
-python3 setup.py sdist bdist_wheel
-twine upload -r pypi --username ${USER} --password ${PASS} dist/*
+#python3 setup.py sdist bdist_wheel
+python3 -m build .
+twine upload -r pypi -u ${USER} -p ${PASS} --skip-existing dist/*
+
+VERSION="v$(python -c 'import toml; print(toml.load("pyproject.toml")["project"]["version"])')"
+git tag -a ${VERSION} -m"Release ${VERSION}"
+git push origin ${VERSION}
+
+
