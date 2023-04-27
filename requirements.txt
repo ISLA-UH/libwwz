@@ -1,4 +1,0 @@
-# Requirements for python 3.9.9, M1 Pro chip
-matplotlib #>= 3.4.2
-numpy #>= 1.19.5
-joblib #>= 1.1.0
