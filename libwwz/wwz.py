@@ -115,7 +115,8 @@ def wwt(timestamps: np.ndarray,
             'octave' -> [freq_tg, freq_low, freq_high, band_order, log_scale_base, override]
     :param decay_constant: decay constant for the Morlet wavelet (should be <0.02) eq. 1-2
             c = 1/(2w), the wavelet decays significantly after a single cycle of 2 * pi / w
-    :param method: determines method of creating freq ('linear', 'octave') default 'linear'
+    :param method: determines method of creating freq ('linear', 'octave') default 'linear'.  if not 'linear',
+            assumes `linear` as the input
     :param parallel: boolean indicate to use parallel processing or not
     :return: Tau, Freq, WWZ, AMP, COEF, NEFF in a numpy array
     """
@@ -137,13 +138,7 @@ def wwt(timestamps: np.ndarray,
     print('largest tau window is ', np.round(largest_tau_window, 3))
 
     # Frequencies to compute WWZ
-    if method == 'linear':
-        freq: np.ndarray = make_freq(freq_low=freq_params[0],
-                                     freq_high=freq_params[1],
-                                     freq_steps=freq_params[2])
-        nfreq: int = len(freq)
-
-    elif method == 'octave':
+    if method == 'octave':
         freq = make_octave_freq(freq_target=freq_params[0],
                                 freq_low=freq_params[1],
                                 freq_high=freq_params[2],
@@ -153,6 +148,11 @@ def wwt(timestamps: np.ndarray,
                                 largest_tau_window=largest_tau_window,
                                 override=freq_params[5])
         nfreq = len(freq)
+    else:
+        freq: np.ndarray = make_freq(freq_low=freq_params[0],
+                                     freq_high=freq_params[1],
+                                     freq_steps=freq_params[2])
+        nfreq: int = len(freq)
 
     # Get number of data from timestamps
     numdat: int = len(timestamps)
@@ -160,7 +160,7 @@ def wwt(timestamps: np.ndarray,
     # Get number of CPU cores on current device (used for parallel)
     num_cores = multiprocessing.cpu_count()
 
-    # WWT Stars Here
+    # WWT Starts Here
     def tau_loop(dtau):
         """
         Replaced the for loop of the taus ("time shifts") for parallel processing.
@@ -170,7 +170,7 @@ def wwt(timestamps: np.ndarray,
         """
         # Initialize the outputs for each iteration
         index: int = 0
-        output: np.ndarray = np.empty((len(freq), 6))
+        tautput: np.ndarray = np.empty((len(freq), 6))
         nstart: int = 1
         dvarw: float = 0.0
 
@@ -274,11 +274,12 @@ def wwt(timestamps: np.ndarray,
                 dpowz = 0.0
 
             # Let's write everything out.
-            output[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
+            tautput[index] = [dtau, dfreq, dpowz, damp, dcoef[0], dneff]
 
             index = index + 1
 
-        return output
+        return tautput
+    # tau_loop ends Here
 
     # Check if parallel or not
     if parallel:
