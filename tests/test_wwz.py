@@ -8,6 +8,6 @@ import unittest
 class TestWwz(unittest.TestCase):
     def test_wwz(self):
         """
-        I don't do a whole lot yet...
+        I don't do much yet...
         """
         self.assertTrue(True)
