@@ -4,7 +4,7 @@
 
 [project]
 name = "libwwz"
-version = "1.3.2"
+version = "1.3.3"
 authors = [
     { name = "RedVox, Inc", email = "support@redvox.io" }
 ]
@@ -14,9 +14,9 @@ requires-python = ">=3.8"
 license = { file = "LICENSE" }
 
 dependencies = [
-    "joblib==1.2.0",
-    "matplotlib==3.7.1",
-    "numpy==1.23.5",
+    "joblib==1.4.2",
+    "matplotlib==3.9.1",
+    "numpy==1.26.4",
 ]
 
 [project.urls]
