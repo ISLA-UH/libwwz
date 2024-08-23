@@ -18,7 +18,7 @@ pip install libwwz
 
 #### Install from source
 
-* Clone this repository from https://github.com/RedVoxInc/libwwz/
+* Clone this repository from https://github.com/ISLA-UH/libwwz/
 * Run `pip3 install . --upgrade --no-cache` from the project root
 
 ### Usage
@@ -33,11 +33,11 @@ result: np.ndarray = libwwz.wwt(...)
 
 ### Examples
 
-Full examples can be found in the [examples directory](https://github.com/RedVoxInc/libwwz/blob/master/examples/example_wwz.py).
+Full examples can be found in the [examples directory](https://github.com/ISLA-UH/libwwz/blob/master/examples/example_wwz.py).
 
 ### API Documentation
 
-API documentation is available at: https://redvoxinc.github.io/libwwz/
+API documentation is available at: https://isla-uh.github.io/libwwz/
 
 ### Contributors and Funding
 
@@ -54,7 +54,7 @@ Contributions are welcome.
 If you would like to contribute:
 
 * Open a new issue on BitBucket
-* Fork and then clone this repository (https://github.com/RedVoxInc/libwwz/)
+* Fork and then clone this repository (https://github.com/ISLA-UH/libwwz/)
 * Install the development requirements in `dev_requirements.txt` with `pip install -r dev_requirements.txt`
 * Create a new branch in your forked repo following the format of `issue-[issue number]`
 * Make your modifications, commit, and push to your forked repository
