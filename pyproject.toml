@@ -6,7 +6,7 @@
 name = "libwwz"
 version = "1.3.4"
 authors = [
-    { name = "RedVox, Inc", email = "support@redvox.io" }
+    { name = "Infrasound Laboratory, University of Hawaii", email = "tyler@isla.hawaii.edu" }
 ]
 description = "Library for computing the weighted wavelet Z transform."
 readme = "README.md"
@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/RedVoxInc/libwwz"
+homepage = "https://github.com/ISLA-UH/libwwz"
 PyPI = "https://pypi.org/project/libwwz/"
 
 [build-system]
